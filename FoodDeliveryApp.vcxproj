@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FoodDeliveryApp.cpp" />
+    <ClCompile Include="UserInformation.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
