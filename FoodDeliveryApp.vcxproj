@@ -139,10 +139,54 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Accept_DeclineOrder.h" />
+    <ClInclude Include="Accept_RejectDelivery.h" />
+    <ClInclude Include="Alert.h" />
+    <ClInclude Include="Cart.h" />
+    <ClInclude Include="CheckOrderStatus.h" />
+    <ClInclude Include="ConfirmDelivery.h" />
+    <ClInclude Include="CreateOrder.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Notification.h" />
+    <ClInclude Include="Order.h" />
+    <ClInclude Include="OrderStatus.h" />
+    <ClInclude Include="PaymentProcessor.h" />
+    <ClInclude Include="PendingOrderReport.h" />
+    <ClInclude Include="Search.h" />
+    <ClInclude Include="SearchResult.h" />
+    <ClInclude Include="ShowPendingOrder.h" />
+    <ClInclude Include="SignIn_Up.h" />
+    <ClInclude Include="SubmitOrder.h" />
+    <ClInclude Include="SubmitPayment.h" />
+    <ClInclude Include="UpdateInfo.h" />
+    <ClInclude Include="UpdateMenu.h" />
+    <ClInclude Include="UpdateOrderStatus.h" />
     <ClInclude Include="UserInformation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Accept_DeclineOrder.cpp" />
+    <ClCompile Include="Accept_RejectDelivery.cpp" />
+    <ClCompile Include="Alert.cpp" />
+    <ClCompile Include="Cart.cpp" />
+    <ClCompile Include="CheckOrderStatus.cpp" />
+    <ClCompile Include="ConfirmDelivery.cpp" />
+    <ClCompile Include="CreateOrder.cpp" />
     <ClCompile Include="FoodDeliveryApp.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Notification.cpp" />
+    <ClCompile Include="Order.cpp" />
+    <ClCompile Include="OrderStatus.cpp" />
+    <ClCompile Include="PaymentProcessor.cpp" />
+    <ClCompile Include="PendingOrderReport.cpp" />
+    <ClCompile Include="Search.cpp" />
+    <ClCompile Include="SearchResult.cpp" />
+    <ClCompile Include="ShowPendingOrder.cpp" />
+    <ClCompile Include="SignIn_Up.cpp" />
+    <ClCompile Include="SubmitOrder.cpp" />
+    <ClCompile Include="SubmitPayment.cpp" />
+    <ClCompile Include="UpdateInfo.cpp" />
+    <ClCompile Include="UpdateMenu.cpp" />
+    <ClCompile Include="UpdateOrderStatus.cpp" />
     <ClCompile Include="UserInformation.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>

@@ -13,11 +13,6 @@ void UserInterface::run() {
 }
 
 
-
-
-
-
-
 //-------------------- Private Functions --------------------
 
 void UserInterface::display_start_up_screen() {
@@ -44,6 +39,7 @@ void UserInterface::display_start_up_screen() {
 void UserInterface::display_home_screen() {
 	vector<string> menu_options = { "Search for a Restaurant", "Create an Order", "Submit Order", "Check Order Status", "Update Personal Information", "Exit" };
 	display_menu(menu_options, "Main Menu");
+	int user_input = get_user_menu_selection(menu_options.size());
 }
 
 void UserInterface::sign_in() {
