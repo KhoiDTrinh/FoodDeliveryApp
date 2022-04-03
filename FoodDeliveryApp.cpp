@@ -1,10 +1,12 @@
 #include <iostream>
+#include "UserInformation.h"
+#include "UserInterface.h"
 
 using namespace std;
 	
 int main() {
-	cout << "Hello World!\n";
-	cout << "Can you see these changes? -Khoi\n";
+	UserInterface ui;
+	ui.run();
+
 	return 0;
 }
-
