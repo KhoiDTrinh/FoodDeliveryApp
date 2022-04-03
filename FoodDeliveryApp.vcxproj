@@ -139,6 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="UserInformation.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="FoodDeliveryApp.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
