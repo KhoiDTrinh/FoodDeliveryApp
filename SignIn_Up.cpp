@@ -3,15 +3,23 @@
 using namespace std; 
 
 
-void SignIn_Up::sign_in() {
+int SignIn_Up::sign_in() {
 
 }
 
-void SignIn_Up::sign_up(string username, string password, string name) {
+int SignIn_Up::sign_up(string username, string password, string name) {
 	ofstream file;
-	file.open("loginInfo.txt");
-	file << name << "," << username << "," << password <<"\n";
-	cout << name << "," << username << "," << password <<"\n";
-	file.close();
 
+	try
+	{
+		file.open("loginInfo.txt", ios::app);
+		file << name << "," << username << "," << password << "\n";
+	}
+	catch (const exception&)
+	{
+		return 0;
+	}
+
+	file.close();
+	return 1;
 }

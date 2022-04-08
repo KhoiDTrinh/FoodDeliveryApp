@@ -10,7 +10,7 @@ class SignIn_Up {
 private:
 
 public:
-	static void sign_up(string username, string password, string name);
-	static void sign_in();
+	static int sign_up(string username, string password, string name);
+	static int sign_in();
 
 };
