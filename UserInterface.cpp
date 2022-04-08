@@ -63,7 +63,17 @@ void UserInterface::sign_in() {
 
 void UserInterface::sign_up() {
 	clear_screen();
+	string username, password, name;
 
+	cout << "Sign In\n--------------------\n";
+	cout << "Name: ";
+	getline(cin, name);
+	cout << "Username: ";
+	getline(cin, username);
+	cout << "Password: ";
+	getline(cin, password);
+	SignIn_Up::sign_up(username,password,name);
+	
 }
 
 
