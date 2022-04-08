@@ -20,6 +20,8 @@ int SignIn_Up::sign_up(string username, string password, string name) {
 		return 0;
 	}
 
+	cout << " Hello";
+
 	file.close();
 	return 1;
 }
