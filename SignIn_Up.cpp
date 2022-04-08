@@ -4,7 +4,7 @@ using namespace std;
 
 
 int SignIn_Up::sign_in() {
-
+	return 0;
 }
 
 int SignIn_Up::sign_up(string username, string password, string name) {
