@@ -12,6 +12,7 @@ int Alert::find_Driver(int order_ID) {
 
 int Alert::customer_Delivery() {
 	/*Find driver in near by restaurant*/
+	return 1;
 }
 
 

@@ -29,7 +29,7 @@ void UserInterface::display_start_up_screen() {
 		break;
 	case 3:
 		cout << "Closing the application.\n\n";
-		exit(1);
+		exit(0);
 	default:
 		cout << "Error. Invalid case.\n\n";
 		exit(1);
@@ -46,6 +46,7 @@ void UserInterface::sign_in() {
 	clear_screen();
 	string username;
 	string password;
+	string temp;
 
 	cout << "Sign In\n--------------------\n";
 	cout << "Username: ";
@@ -53,27 +54,66 @@ void UserInterface::sign_in() {
 	cout << "Password: ";
 	getline(cin, password);
 
-	//Check Validity of Log In Credentials Here
+	int result = SignIn_Up::sign_in(username, password);
+	
+	switch (result) {
+	case 1:		//successful log in
+		display_home_screen();
+		break;
+	case -1:	//invalid password
+		cout << "Password was incorrect\nPress ENTER to return to Log In menu\n";
+		getline(cin, temp);
+		display_start_up_screen();
+		break;
+	case -2:	//invalid username
+		cout << "Username was not found\nPress ENTER to return to Log In menu\n";
+		getline(cin, temp);
+		display_start_up_screen();
+		break;
+	case 0:
+	default:	//error
+		cout << "Error encountered\nProgram terminating\n\n\n";
+		exit(1);
+	}
 
-
-
-
-	display_home_screen();
 }
 
 void UserInterface::sign_up() {
 	clear_screen();
 	string username, password, name;
+	string temp;
 
-	cout << "Sign In\n--------------------\n";
+	cout << "Sign Up\n--------------------\n";
 	cout << "Name: ";
 	getline(cin, name);
 	cout << "Username: ";
 	getline(cin, username);
 	cout << "Password: ";
 	getline(cin, password);
-	SignIn_Up::sign_up(username,password,name);
-	
+
+	int result = SignIn_Up::sign_up(name, username, password);
+
+	switch (result) {
+	case 1:		//successful account creation
+		display_home_screen();
+		break;
+	case -1:	//user input invalid
+		cout << "User input was invalid\nPress ENTER to return to Log In menu\n";
+		getline(cin, temp);
+		display_start_up_screen();
+		break;
+	case -2:	//username already taken
+		cout << "Username is already taken\nPress ENTER to return to Log In menu\n";
+		getline(cin, temp);
+		display_start_up_screen();
+		break;
+	case 0:
+	default:	//error
+		cout << "Error encountered\nProgram terminating\n\n\n";
+		exit(1);
+	}
+
+
 }
 
 

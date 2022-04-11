@@ -193,6 +193,9 @@
   <ItemGroup>
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="loginInfo.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
