@@ -7,7 +7,7 @@
 //	1 = update successful;
 //	0 = unidentified error;
 //	-1 = user not found in database;
-int UpdateInfo::update_customer_info(vector<string>& input, UserInformation*& user_record) {
+int UpdateInfo::update_user_info(vector<string>& input, UserInformation*& user_record) {
 	int result = user_record->update_user_record(input);
 	return result;
 }

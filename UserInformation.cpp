@@ -6,6 +6,17 @@ UserInformation::UserInformation(string record) {
 	stringstream stream(record);
 	getline(stream, username, ',');
 	getline(stream, password, ',');
+
+	string a_type;
+	getline(stream, a_type, ',');
+	try {
+		_account_type = stoi(a_type);
+	}
+	catch (const exception&) {
+		cout << "Error reading database\nTerminating application\n\n";
+		exit(1);
+	}
+	
 	getline(stream, first_name, ',');
 	getline(stream, last_name, ',');
 }

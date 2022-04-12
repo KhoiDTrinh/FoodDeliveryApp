@@ -1,7 +1,4 @@
-username,password,first_name,last_name
-Khoi,16403443607901214248,Khoi,Trinh
-myUsername,5349062054999824994,first,last
-newAccount,266877920130663416,firstname,lastname
-aaa,9393809642233982832,my,name
-NewAccount2,1413300871755198526,Two,Second
-asdf,10387647666575087703,asdf,adsf
+username,password,account_type,first_name,last_name,address,phone,email
+Khoi,16403443607901214248,0,Khoi,Trinh,1234 Main St,7132592340,trinhk7@gator.uhd.edu
+William,859079331343599730,1,William,Cao,9999 Street,1234567890,email@email.com
+FirstRestaurant,15929808545997197129,2,FirstName,LastName,1234 MyAddress,2323232323,firstrestaurant@gmail.com

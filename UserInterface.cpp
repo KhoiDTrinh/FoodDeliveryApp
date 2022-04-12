@@ -35,12 +35,29 @@ void UserInterface::display_start_up_screen() {
 		cout << "Closing the application.\n\n";
 		exit(0);
 	default:
-		cout << "Error. Invalid case.\n\n";
+		cout << "Error encountered\nProgram terminating\n\n";
 		exit(1);
 	}
 }
 
 void UserInterface::display_home_screen() {
+	switch (user_record->get_account_type()) {
+	case UserInformation::account_type::customer:
+		display_customer_home_screen();
+		break;
+	case UserInformation::account_type::driver:
+		display_driver_home_screen();
+		break;
+	case UserInformation::account_type::restaurant:
+		display_restaurant_home_screen();
+		break;
+	default:
+		cout << "Error encountered\nProgram terminating\n\n";
+		exit(1);
+	}
+}
+
+void UserInterface::display_customer_home_screen() {
 	vector<string> menu_options = { "Search for a Restaurant", "Create an Order", "Submit Order", "Check Order Status", "Update Personal Information", "Exit" };
 	display_menu(menu_options, "Main Menu");
 
@@ -64,12 +81,66 @@ void UserInterface::display_home_screen() {
 		cout << "Closing the application.\n\n";
 		exit(0);
 	default:
-		cout << "Error. Invalid case.\n\n";
+		cout << "Error encountered\nProgram terminating\n\n";
 		exit(1);
 	}
 }
 
+void UserInterface::display_driver_home_screen() {
+	vector<string> menu_options = { "Accept/Reject Delivery", "Check Order Status", "Confirm Delivery", "Update Personal Information", "Exit" };
+	display_menu(menu_options, "Main Menu");
 
+	cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
+
+	int user_input = get_user_menu_selection(menu_options.size());
+
+	switch (user_input) {
+	case 1:		//Accept/Reject Delivery
+		break;
+	case 2:		//Check Order Status
+		break;
+	case 3:		//Confirm Delivery
+		break;
+	case 4:		//Update Personal Information
+		update_personal_info();
+		break;
+	case 5:		//Exit
+		cout << "Closing the application.\n\n";
+		exit(0);
+	default:
+		cout << "Error encountered\nProgram terminating\n\n";
+		exit(1);
+	}
+}
+
+void UserInterface::display_restaurant_home_screen() {
+	vector<string> menu_options = { "Accept/Decline Order", "Update Order Status", "Show Pending Orders", "Update Menu", "Update Personal Information", "Exit"};
+	display_menu(menu_options, "Main Menu");
+
+	cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
+
+	int user_input = get_user_menu_selection(menu_options.size());
+
+	switch (user_input) {
+	case 1:		//Accept/Decline Order
+		break;
+	case 2:		//Update Order Status
+		break;
+	case 3:		//Show Pending Orders
+		break;
+	case 4:		//Update Menu
+		break;
+	case 5:		//Update Personal Information
+		update_personal_info();
+		break;
+	case 6:		//Exit
+		cout << "Closing the application.\n\n";
+		exit(0);
+	default:
+		cout << "Error encountered\nProgram terminating\n\n";
+		exit(1);
+	}
+}
 
 
 
@@ -113,6 +184,19 @@ void UserInterface::sign_in() {
 
 void UserInterface::sign_up() {
 	clear_screen();
+
+	vector<string> menu_options = { "Customer", "Driver", "Restaurant", "Exit"};
+	display_menu(menu_options, "Which account type do you wish to create?");
+	cout << "Which account type do you wish to create?\n";
+	int user_menu_selection = get_user_menu_selection(menu_options.size());
+
+	if (user_menu_selection == 4) {
+		cout << "Closing the application.\n\n";
+		exit(0);
+	}
+
+	clear_screen();
+
 	string input;
 	vector<string> user_input;
 
@@ -126,9 +210,25 @@ void UserInterface::sign_up() {
 	getline(cin, input);
 	user_input.push_back(input);
 
+	switch (user_menu_selection) {
+	case 1:
+		user_input.push_back(to_string(UserInformation::account_type::customer));
+		break;
+	case 2:
+		user_input.push_back(to_string(UserInformation::account_type::driver));
+		break;
+	case 3:
+		user_input.push_back(to_string(UserInformation::account_type::restaurant));
+		break;
+	default:
+		cout << "Error encountered\nProgram terminating\n\n";
+		exit(1);
+	}
+
 	get_user_info(user_input);
 
 	int result = SignIn_Up::sign_up(user_input, user_record);
+
 
 	switch (result) {
 	case 1:		//successful account creation
@@ -175,9 +275,10 @@ void UserInterface::update_personal_info() {
 		return;
 	}
 
+	user_input.push_back(to_string(user_record->get_account_type()));
 	get_user_info(user_input);
 
-	int result = UpdateInfo::update_customer_info(user_input, user_record);
+	int result = UpdateInfo::update_user_info(user_input, user_record);
 
 	switch (result) {
 	case 1:		//successful update
@@ -273,6 +374,18 @@ void UserInterface::get_user_info(vector<string>& user_input) {
 	user_input.push_back(input);
 
 	cout << "Last Name: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	cout << "Address: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	cout << "Phone Number: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	cout << "Email: ";
 	getline(cin, input);
 	user_input.push_back(input);
 }

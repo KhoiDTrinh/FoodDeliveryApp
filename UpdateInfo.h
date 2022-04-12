@@ -7,6 +7,6 @@
 class UpdateInfo {
 private:
 public:
-	static int update_customer_info(vector<string>& input, UserInformation*& user_record);
+	static int update_user_info(vector<string>& input, UserInformation*& user_record);
 	static bool validate_login(string username, string password, UserInformation*& user_record);
 };
