@@ -166,7 +166,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="loginInfo.txt">
+    <Text Include="UserDatabase.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -5,7 +5,7 @@ using namespace std;
 //-------------------- Public Functions --------------------
 
 UserInterface::UserInterface() {
-
+	user_record = nullptr;
 }
 
 void UserInterface::run() {
@@ -39,6 +39,9 @@ void UserInterface::display_start_up_screen() {
 void UserInterface::display_home_screen() {
 	vector<string> menu_options = { "Search for a Restaurant", "Create an Order", "Submit Order", "Check Order Status", "Update Personal Information", "Exit" };
 	display_menu(menu_options, "Main Menu");
+
+	cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
+
 	int user_input = get_user_menu_selection(menu_options.size());
 }
 
@@ -54,7 +57,7 @@ void UserInterface::sign_in() {
 	cout << "Password: ";
 	getline(cin, password);
 
-	int result = SignIn_Up::sign_in(username, password);
+	int result = SignIn_Up::sign_in(username, password, user_record);
 	
 	switch (result) {
 	case 1:		//successful log in
@@ -80,18 +83,28 @@ void UserInterface::sign_in() {
 
 void UserInterface::sign_up() {
 	clear_screen();
-	string username, password, name;
-	string temp;
+	string input;
+	vector<string> user_input;
+
 
 	cout << "Sign Up\n--------------------\n";
-	cout << "Name: ";
-	getline(cin, name);
 	cout << "Username: ";
-	getline(cin, username);
-	cout << "Password: ";
-	getline(cin, password);
+	getline(cin, input);
+	user_input.push_back(input);
 
-	int result = SignIn_Up::sign_up(name, username, password);
+	cout << "Password: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	cout << "First Name: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	cout << "Last Name: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	int result = SignIn_Up::sign_up(user_input, user_record);
 
 	switch (result) {
 	case 1:		//successful account creation
@@ -99,12 +112,12 @@ void UserInterface::sign_up() {
 		break;
 	case -1:	//user input invalid
 		cout << "User input was invalid\nPress ENTER to return to Log In menu\n";
-		getline(cin, temp);
+		getline(cin, input);
 		display_start_up_screen();
 		break;
 	case -2:	//username already taken
 		cout << "Username is already taken\nPress ENTER to return to Log In menu\n";
-		getline(cin, temp);
+		getline(cin, input);
 		display_start_up_screen();
 		break;
 	case 0:

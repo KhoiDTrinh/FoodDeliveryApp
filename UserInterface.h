@@ -4,11 +4,14 @@
 #include <vector>
 #include <string>
 #include "SignIn_Up.h"
+#include "UserInformation.h"
 
 using namespace std;
 
 class UserInterface {
 private:
+	UserInformation* user_record;
+
 	const int UI_MENU_WIDTH = 50;		//Width of the user interface in number of characters
 	const int UI_MENU_HEIGHT = 15;		//Max number of items displayed in the user interface menu
 
