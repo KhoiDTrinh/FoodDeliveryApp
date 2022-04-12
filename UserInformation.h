@@ -22,5 +22,9 @@ public:
 
 	static bool search_username(string username);
 	static int get_user_record(string username, UserInformation*& user_record);
-	static int add_user_record(vector<string> user_info, UserInformation*& user_record);
+	static int add_user_record(vector<string>& user_info, UserInformation*& user_record);
+	static string hash_password(string password);
+
+
+	int update_user_record(vector<string>& user_info);
 };

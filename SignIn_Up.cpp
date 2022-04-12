@@ -14,7 +14,7 @@ int SignIn_Up::sign_in(string username, string password, UserInformation*& user_
 	int result = UserInformation::get_user_record(username, user_record);
 	if (result == -2)
 		return -2;
-	if (hash_password(password).compare(user_record->get_hashed_password()) != 0)
+	if (UserInformation::hash_password(password).compare(user_record->get_hashed_password()) != 0)
 		return -1;
 
 	return 1;
@@ -27,13 +27,15 @@ int SignIn_Up::sign_in(string username, string password, UserInformation*& user_
 //	-1 = input invalid;
 //	-2 = username already taken;
 int SignIn_Up::sign_up(vector<string> user_info, UserInformation*& user_record) {
-	for (string item : user_info)
-		if (!check_validity(item)) return -1;
+	for (int i = 0; i < user_info.size(); i++) {
+		if (!check_length(user_info[i]))
+			return -1;
+		if (i < 2 && check_spaces(user_info[i]))
+			return -1;
+	}
 
 	if (UserInformation::search_username(user_info[0]) == true)
 		return -2;
-
-	user_info[1] = hash_password(user_info[1]);
 
 	int result = UserInformation::add_user_record(user_info, user_record);
 	if (result == 0)
@@ -44,13 +46,13 @@ int SignIn_Up::sign_up(vector<string> user_info, UserInformation*& user_record) 
 
 //-------------------- Private Functions --------------------
 
-string SignIn_Up::hash_password(string password) {
-	hash<string> str_hash;
-	return to_string(str_hash(password));
+//Validates the length of the input string. Returns true if length is greater than 0 and less than 64.
+bool SignIn_Up::check_length(const string& input) {
+	return (input.length() > 0 && input.length() < 64);
 }
 
-bool SignIn_Up::check_validity(const string& input) {
-	if (input.length() == 0)
-		return false;
-	return true;
+
+//Checks for spaces in input string. Returns true if at least 1 space is found, and false otherwise
+bool SignIn_Up::check_spaces(const string& input) {
+	return (input.find(' ') != string::npos);
 }
