@@ -18,10 +18,10 @@ int Notification::send_Delivery_Alert_Driver(int order_ID) {
 		}
 		return 1;
 	}
-	catch (int x)
+	catch (int value)
 	{
-		return x; 
-		alert << "error";
+		return value; 
+		alert << "Error"<<endl;
 	}
 
 	alert.close();
