@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include "Notification.h"
+#include "UserInformation.h"
 
 using namespace std; 
 

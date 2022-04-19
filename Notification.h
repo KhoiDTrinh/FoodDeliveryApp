@@ -11,9 +11,9 @@ private:
 	
 
 public:
-	static int send_Delivery_Alert_Driver(int order_ID);
+	static int send_Delivery_Alert_Driver(int order_ID, string driver_record);
 	static int send_Delivery_Alert_Customer(ifstream &picture);
-	static int send_Order_Alert_Restaurant(string name);
+	static int send_Order_Alert_Restaurant(string name, string customer_record);
 	static int send_Restaurant_Decline_Customer(string reason);
 
 };

@@ -7,7 +7,7 @@ using namespace std;
 //Try and catch here
 ofstream alert;
 
-int Notification::send_Delivery_Alert_Driver(int order_ID) {
+int Notification::send_Delivery_Alert_Driver(int order_ID, string driver_record) {
 	alert.open("alert.txt", ios::app);
 
 	try
@@ -40,10 +40,10 @@ int Notification::send_Delivery_Alert_Customer(ifstream &picture) {
 		}
 		return 1;
 	}
-	catch (int x)
+	catch (int value)
 	{
 		alert << "error";
-		return x;
+		return value;
 	}
 
 	alert.close();
@@ -51,7 +51,7 @@ int Notification::send_Delivery_Alert_Customer(ifstream &picture) {
 }
 
 
-int Notification::send_Order_Alert_Restaurant(string name) {
+int Notification::send_Order_Alert_Restaurant(string name, string customer_record) {
 
 	alert.open("alert.txt", ios::app);
 	try 
@@ -62,10 +62,10 @@ int Notification::send_Order_Alert_Restaurant(string name) {
 		}
 		return 1;
 	}
-	catch (int x)
+	catch (int value)
 	{
 		alert << "error";
-		return x;
+		return value;
 	}
 
 	alert.close();
@@ -86,10 +86,10 @@ int Notification::send_Restaurant_Decline_Customer(string reason) {
 		}
 		return 1;
 	}
-	catch (int x)
+	catch (int value)
 	{
 		alert << "error";
-		return x;
+		return value;
 	}
 
 	alert.close();
