@@ -42,7 +42,7 @@
     <ClCompile Include="CreateOrder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
+    <ClCompile Include="Restaurant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Notification.cpp">
@@ -119,7 +119,7 @@
     <ClInclude Include="CreateOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
+    <ClInclude Include="Restaurant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Notification.h">
@@ -167,6 +167,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="UserDatabase.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Restaurants.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="MenuItems.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

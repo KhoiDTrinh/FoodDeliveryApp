@@ -129,6 +129,7 @@ void UserInterface::display_restaurant_home_screen() {
 	case 3:		//Show Pending Orders
 		break;
 	case 4:		//Update Menu
+		display_update_menu_screen();
 		break;
 	case 5:		//Update Personal Information
 		update_personal_info();
@@ -142,6 +143,33 @@ void UserInterface::display_restaurant_home_screen() {
 	}
 }
 
+void UserInterface::display_update_menu_screen() {
+	vector<string> menu_options = { "Add Item", "Update Item", "Delete Item", "Exit"};
+	display_menu(menu_options, "Update Menu");
+
+	int user_input = get_user_menu_selection(menu_options.size());
+
+	switch (user_input) {
+	case 1:
+		add_menu_item();
+		display_update_menu_screen();
+		break;
+	case 2:
+		update_menu_item();
+		display_update_menu_screen();
+		break;
+	case 3:
+		delete_menu_item();
+		display_update_menu_screen();
+		break;
+	case 4:
+		display_restaurant_home_screen();
+		break;
+	default:
+		cout << "Error encountered\nProgram terminating\n\n";
+		exit(1);
+	}
+}
 
 
 
@@ -159,9 +187,12 @@ void UserInterface::sign_in() {
 	getline(cin, password);
 
 	int result = SignIn_Up::sign_in(username, password, user_record);
-	
+
 	switch (result) {
 	case 1:		//successful log in
+		if (user_record->get_account_type() == 2) {
+			get_restaurant_record();
+		}
 		display_home_screen();
 		break;
 	case -1:	//invalid password
@@ -179,7 +210,6 @@ void UserInterface::sign_in() {
 		cout << "Error encountered\nProgram terminating\n\n";
 		exit(1);
 	}
-
 }
 
 void UserInterface::sign_up() {
@@ -228,7 +258,12 @@ void UserInterface::sign_up() {
 	get_user_info(user_input);
 
 	int result = SignIn_Up::sign_up(user_input, user_record);
-
+	
+	if (user_menu_selection == 3) {
+		user_input.clear();
+		get_restaurant_info(user_input);
+		Restaurant::add_new_restaurant(user_input, restaurant_record);
+	}
 
 	switch (result) {
 	case 1:		//successful account creation
@@ -253,7 +288,58 @@ void UserInterface::sign_up() {
 
 
 
+void UserInterface::add_menu_item() {
+	clear_screen();
+	vector<string> user_input;
 
+	cout << "Add Menu Item\n--------------------\n";
+	get_menu_item_info(user_input);
+
+	UpdateMenu::add_menu_item(user_input, restaurant_record);
+}
+
+void UserInterface::update_menu_item() {
+	vector<pair<int,string>> menu_item_list = restaurant_record->get_list_menu_item_names();
+	vector<string> menu_options;
+	for (auto item : menu_item_list) {
+		menu_options.push_back(item.second);
+	}
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Update Menu Item");
+
+	int user_selection = get_user_menu_selection(menu_options.size());
+
+	if (user_selection == menu_options.size()) {
+		display_update_menu_screen();
+		return;
+	}
+
+	vector<string> user_input;
+
+	cout << "Update Menu Item\n--------------------\n";
+	get_menu_item_info(user_input);
+
+	UpdateMenu::update_menu_item(user_input, restaurant_record, menu_item_list[user_selection - 1].first);
+}
+
+void UserInterface::delete_menu_item() {
+	vector<pair<int, string>> menu_item_list = restaurant_record->get_list_menu_item_names();
+	vector<string> menu_options;
+	for (auto item : menu_item_list) {
+		menu_options.push_back(item.second);
+	}
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Delete Menu Item");
+
+	int user_selection = get_user_menu_selection(menu_options.size());
+
+	if (user_selection == menu_options.size()) {
+		display_update_menu_screen();
+		return;
+	}
+
+	UpdateMenu::delete_menu_item(restaurant_record, menu_item_list[user_selection - 1].first);
+}
 
 void UserInterface::update_personal_info() {
 	string input;
@@ -388,4 +474,61 @@ void UserInterface::get_user_info(vector<string>& user_input) {
 	cout << "Email: ";
 	getline(cin, input);
 	user_input.push_back(input);
+}
+
+void UserInterface::get_restaurant_info(vector<string>& user_input) {
+	string input;
+
+	user_input.push_back(to_string(user_record->get_user_id()));
+
+	cout << "Restaurant Name: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	user_input.push_back(user_record->get_address());
+
+	cout << "Restaurant Type: ";
+	getline(cin, input);
+	user_input.push_back(input);
+}
+
+void UserInterface::get_menu_item_info(vector<string>& user_input) {
+	string input;
+	double price = -1.0;
+
+	cout << "Item Name: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	cout << "Item Description: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	cout << "Item Price: ";
+
+	do {
+		getline(cin, input);
+
+		try {
+			price = stoi(input);
+		}
+		catch (const invalid_argument) {
+			cout << "Invalid input. Please enter a number " << endl;
+		}
+
+		if (price <= 0) {
+			cout << "Number out of range. Please enter a number greater than 0" << endl;
+			price = -1;
+		}
+	} while (price < 0);
+
+	user_input.push_back(input);
+}
+
+void UserInterface::get_restaurant_record() {
+	int result = Restaurant::get_restaurant_record(user_record->get_user_id(), restaurant_record);
+	if (result == 0) {
+		cout << "Error encountered\nRestaurant not found in database.\nProgram terminating\n\n";
+		exit(1);
+	}
 }

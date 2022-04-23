@@ -1,0 +1,4 @@
+item_id,restaurant_id,item_name,item_description,item_price
+2,3,Fish Filet,Fish patty topped with tartar sauce.,3.3
+3,3,Big Mac,Two patties with special Mac sauce.,10
+4,3,McRib,Boneless pork patty with bbq sauce served on a roll.,5.26

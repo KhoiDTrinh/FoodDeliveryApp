@@ -1,4 +1,8 @@
-username,password,account_type,first_name,last_name,address,phone,email
-Khoi,16403443607901214248,0,Khoi,Trinh,1234 Main St,7132592340,trinhk7@gator.uhd.edu
-William,859079331343599730,1,William,Cao,9999 Street,1234567890,email@email.com
-FirstRestaurant,15929808545997197129,2,FirstName,LastName,1234 MyAddress,2323232323,firstrestaurant@gmail.com
+user_id,username,password,account_type,first_name,last_name,address,phone,email
+1,Khoi,16403443607901214248,0,Khoi,Trinh,1234 Main St,7132592340,trinhk7@gator.uhd.edu
+2,William,859079331343599730,1,William,Cao,9999 Street,1234567890,email@email.com
+3,mcd,16653392337757490594,2,FirstName,LastName,1234 MyAddress,2323232323,firstrestaurant@gmail.com
+4,NewUser,13137871044323590628,0,New,User,2929 Street,1230981233,email@email.com
+5,SecondRestaurant,7963412843350287166,2,Chip,otle,12321 asdfasd,32492394823,asdfasdf@ahsdf.com
+6,aaaaa,1791002357062772008,2,Burger,King,993488 The King,13223423,asdfkjasdf
+7,aaa,16653392337757490594,2,Chick,Fila,1234 Chicken,1231231234,chick@en.com

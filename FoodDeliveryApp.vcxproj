@@ -146,7 +146,7 @@
     <ClInclude Include="CheckOrderStatus.h" />
     <ClInclude Include="ConfirmDelivery.h" />
     <ClInclude Include="CreateOrder.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Restaurant.h" />
     <ClInclude Include="Notification.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="OrderStatus.h" />
@@ -172,7 +172,7 @@
     <ClCompile Include="ConfirmDelivery.cpp" />
     <ClCompile Include="CreateOrder.cpp" />
     <ClCompile Include="FoodDeliveryApp.cpp" />
-    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Restaurant.cpp" />
     <ClCompile Include="Notification.cpp" />
     <ClCompile Include="Order.cpp" />
     <ClCompile Include="OrderStatus.cpp" />
@@ -194,6 +194,8 @@
     <ClInclude Include="UserInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="MenuItems.txt" />
+    <Text Include="Restaurants.txt" />
     <Text Include="UserDatabase.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

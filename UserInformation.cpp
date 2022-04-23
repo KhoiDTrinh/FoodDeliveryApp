@@ -4,6 +4,17 @@ string UserInformation::file_name = "UserDatabase.txt";
 
 UserInformation::UserInformation(string record) {
 	stringstream stream(record);
+
+	string id;
+	getline(stream, id, ',');
+	try {
+		_user_id = stoi(id);
+	}
+	catch (const exception&) {
+		cout << "Error reading database\nTerminating application\n\n";
+		exit(1);
+	}
+
 	getline(stream, username, ',');
 	getline(stream, password, ',');
 
@@ -19,6 +30,9 @@ UserInformation::UserInformation(string record) {
 	
 	getline(stream, first_name, ',');
 	getline(stream, last_name, ',');
+	getline(stream, address, ',');
+	getline(stream, phone, ',');
+	getline(stream, email, ',');
 }
 
 bool UserInformation::search_username(string username) {
@@ -29,6 +43,7 @@ bool UserInformation::search_username(string username) {
 	file.open(file_name);
 	while (getline(file, input)) {
 		stringstream record(input);
+		getline(record, temp_user, ',');
 		getline(record, temp_user, ',');
 		if (username.compare(temp_user) == 0) {	//str.compare(str) == 0 when the two string are identical
 			file.close();
@@ -49,6 +64,7 @@ int UserInformation::get_user_record(string username, UserInformation*& user_rec
 	while (getline(file, input)) {
 		stringstream record(input);
 		getline(record, temp_user, ',');
+		getline(record, temp_user, ',');
 		if (username.compare(temp_user) == 0) {	//str.compare(str) == 0 when the two string are identical
 			file.close();
 			user_record = new UserInformation(input);
@@ -64,8 +80,9 @@ int UserInformation::add_user_record(vector<string>& user_info, UserInformation*
 	user_info[1] = hash_password(user_info[1]);
 
 	try {
+		int id = get_next_user_id();
 		ofstream file;
-		string output = "";
+		string output = to_string(id) + ",";
 
 		file.open(file_name, ios::app);
 		for (int i = 0; i < user_info.size(); i++) {
@@ -95,13 +112,14 @@ int UserInformation::update_user_record(vector<string>& user_info) {
 		bool found = false;
 
 		while (!found && getline(file, line)) {
-			string value;
+			string username, user_id;
 			stringstream sstream(line);
-			getline(sstream, value, ',');
-			if(value.compare(user_info[0]))
+			getline(sstream, user_id, ',');
+			getline(sstream, username, ',');
+			if(username.compare(user_info[0]))
 				database.push_back(line);
 			else {
-				string output = "";
+				string output = user_id + ",";
 				for (int i = 0; i < user_info.size(); i++) {
 					output += user_info[i];
 					if (i != user_info.size() - 1)
@@ -144,4 +162,28 @@ int UserInformation::update_user_record(vector<string>& user_info) {
 string UserInformation::hash_password(string password) {
 	hash<string> str_hash;
 	return to_string(str_hash(password));
+}
+
+int UserInformation::get_next_user_id() {
+	string record;
+	string temp_id;
+	int last_id = 0;
+	ifstream file;
+	file.open(file_name);
+	getline(file, record);
+	while (getline(file, record)) {
+		stringstream line(record);
+		getline(line, temp_id, ',');
+		try {
+			last_id = stoi(temp_id);
+		}
+		catch (const exception&) {
+			cout << "Error reading file\nProgram terminating\n\n";
+			exit(1);
+		}
+	}
+
+	last_id++;
+
+	return last_id;
 }
