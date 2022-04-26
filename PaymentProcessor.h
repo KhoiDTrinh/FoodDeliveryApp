@@ -15,5 +15,5 @@ public:
 		int cvc;
 		string name;
 	};
-	static bool submitPayment(string paymentM, PaymentInformation paymentInfo, float price);
+	static bool submitPayment(int paymentM, PaymentInformation paymentInfo, float price);
 };
