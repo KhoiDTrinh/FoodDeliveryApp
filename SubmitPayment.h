@@ -17,10 +17,10 @@ public:
 		string name;    // Name on the card
 	};
 
-	static bool submitPayment(int paymentM, PaymentInformation paymentInfo, float price)
+	static int submitPayment(int paymentM, PaymentInformation paymentInfo, float price)
 	{
 		fstream card_info;
-		card_info.open("CardInformation");
+		card_info.open("payment.txt");
 
 		if (card_info.is_open())
 		{
@@ -34,6 +34,13 @@ public:
 
 			card_info << price;				// It will write into the file the total price that the person will pay.
 
+			cout << "Payment is successful.\n";
+			return 1;
+		}
+		else
+		{
+			cout << "Im sorry this payment method was unsuccessful";
+			return 0;
 		}
 	};
 };

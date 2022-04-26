@@ -1,53 +1,34 @@
 #include "PaymentProcessor.h"
+#include "SubmitPayment.h"
 #include <string>
 #include <iostream>
 using namespace std;
 
-bool paypross::submitPayment(int paymentMethod, PaymentInformation paymentInfo, float totalCost)
+int PaymentProcessorClass::submitPayment(int paymentMethod, PaymentInformation paymentInfo, float totalCost)
 {
-	bool result = false;
-	switch (paymentMethod)
-	{
-	case 1:					// PAYMENT TYPE IS VISA.
-		bool results = true;
-		return result;
-	case 2:					// PAYMENT TYPE IS MASTERCARD.
-		bool result = true;
-		return results;
-	case 3:					// PAYMENT TYPE IS AMERICAN EXPRESS.
-		bool result = true;
-		return result;
-	default:
-		cout << "Im sorry, your payment was unsuccessful\n";
-		return result;
-	}
-}
-/*
-int PaymentProcessor::submitPayment(int paymentMethod, PaymentInformation paymentInfo, float totalCost){
+	PaymentInformation paymentInformation;
 	ofstream payment;
 	payment.open("payement.txt", ios::app);
 
-	try{
-		switch(paymentMethod)
+	try {
+		switch (paymentMethod)
 		{
-			case 1;
-			payment << paymentInformation.name << "," << paymentInformation.cardNumber <<"," << paymentInformation.cvc <<"," << paymentInformation.experation << endl;
+		case 1:					// PAYMENT TYPE IS VISA.
+			payment << paymentInformation.name << "," << paymentInformation.ccNumber << "," << paymentInformation.cvc << "," << paymentInformation.experation << endl;
 			return 1;
-			case 2;
-			payment << paymentInformation.name << "," << paymentInformation.cardNumber <<"," << paymentInformation.cvc <<"," << paymentInformation.experation << endl;
+		case 2:					// PAYMENT TYPE IS MASTERCARD.
+			payment << paymentInformation.name << "," << paymentInformation.ccNumber << "," << paymentInformation.cvc << "," << paymentInformation.experation << endl;
 			return 1;
-			case 3;
-			payment << paymentInformation.name << "," << paymentInformation.cardNumber <<"," << paymentInformation.cvc <<"," << paymentInformation.experation << endl;
+		case 3:					// PAYMENT TYPE IS AMERICAN EXPRESS.
+			payment << paymentInformation.name << "," << paymentInformation.ccNumber << "," << paymentInformation.cvc << "," << paymentInformation.experation << endl;
 			return 1;
-			default:
-				throw 0;
-				cout << invalid;
+		default:
+			cout << "Im sorry, your payment was unsuccessful\n";
+			throw 0;
 		}
-
-	catch(int result)
+	}
+	catch (int result)
+	{
 		return result;
-
 	}
 }
-
-*/
