@@ -15,5 +15,5 @@ public:
 		int cvc;
 		string name;
 	};
-	static b submitPayment(int paymentM, PaymentInformation paymentInfo, float price);
+	static int submitPayment(int paymentM, PaymentInformation paymentInfo, float price);
 };
