@@ -8,35 +8,35 @@ using namespace std;
 //submitOrder
 bool submitOrder(float totalCost)
 {
-	string paymentMethod = getPaymentMethod();
-	PaymentProcessClass::PaymentInformation paymentInfo = getPaymentInformation();
+	int paymentMethod = getPaymentMethod();
+	PaymentProcessorClass::PaymentInformation paymentInfo = getPaymentInformation();
 
 
-	bool results = PaymentProcessClass::submitPayment(paymentMethod, paymentInfo, totalCost);
+	bool results = PaymentProcessorClass::submitPayment(paymentMethod, paymentInfo, totalCost);
 
 	return results;
 }
 
 //Choose a payment method
-string getPaymentMethod()
+int getPaymentMethod()
 {
 	//User input for chosen payment method.
-	string paymentMethod;
+	int paymentoption;
 
 	//Users input for their card choice.
-	cout << "Choose a payment method:\n";
-	cout << "Visa\nMastercard\nAmerican Express\n";
-	cin >> paymentMethod;
+	cout << "Choose a payment method (Enter option number):\n";
+	cout << "(1)Visa\n(2)Mastercard\n(3)American Express\n";
+	cin >> paymentoption;
 
-	return paymentMethod;
+	return paymentoption;
 
 }
 
 //The payment information class
-PaymentProcessClass::PaymentInformation getPaymentInformation()
+PaymentProcessorClass::PaymentInformation getPaymentInformation()
 {
-	PaymentProcessClass::PaymentInformation pI;
-	PaymentProcessClass::PaymentInformation paymentInfo = PaymentProcessClass::PaymentInformation();
+	PaymentProcessorClass::PaymentInformation pI;
+	PaymentProcessorClass::PaymentInformation paymentInfo = PaymentProcessorClass::PaymentInformation();
 	cout << "Enter ccNumber: ";
 	cin >> pI.ccNumber;
 
@@ -51,5 +51,4 @@ PaymentProcessClass::PaymentInformation getPaymentInformation()
 
 	return paymentInfo;
 }
-
 
