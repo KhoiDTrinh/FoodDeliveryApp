@@ -20,7 +20,7 @@ bool submitOrder(float totalCost)
 //Choose a payment method
 int getPaymentMethod()
 {
-	//User input for chosen payment method.
+	//User input for chosen payment method. so paymentMethod == paymentoption.
 	int paymentoption;
 
 	//Users input for their card choice.
@@ -35,12 +35,14 @@ int getPaymentMethod()
 //The payment information class
 PaymentProcessorClass::PaymentInformation getPaymentInformation()
 {
-	PaymentProcessorClass::PaymentInformation pI;
-	PaymentProcessorClass::PaymentInformation paymentInfo = PaymentProcessorClass::PaymentInformation();
+	// paymentInfo will push customers data into the PaymentInformation structure that contain the ccNumber, experation, CVC, and name on the card.
+	PaymentProcessorClass::PaymentInformation pI = PaymentProcessorClass::PaymentInformation();
+
+	// Customer enters the ccNumber, Experation date, CVC and the name on the card.
 	cout << "Enter ccNumber: ";
 	cin >> pI.ccNumber;
 
-	cout << "Enter experation date: ";
+	cout << "Enter experation date (MMYYYY): ";
 	cin >> pI.experation;
 
 	cout << "Enter CVC: ";
@@ -49,6 +51,8 @@ PaymentProcessorClass::PaymentInformation getPaymentInformation()
 	cout << "Enter the name on the credit card: ";
 	cin >> pI.name;
 
-	return paymentInfo;
+	return pI;
 }
+
+
 
