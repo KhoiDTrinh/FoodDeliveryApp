@@ -1,21 +1,24 @@
 #include "PaymentProcessor.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
-bool paypross::submitPayment(string paymentMethod, PaymentInformation paymentInfo, float totalCost)
+bool paypross::submitPayment(int paymentMethod, PaymentInformation paymentInfo, float totalCost)
 {
 	bool result = false;
 	switch (paymentMethod)
 	{
-	case "Visa":
-		bool results = 1;
+	case 1:					// PAYMENT TYPE IS VISA.
+		bool results = true;
 		return result;
-	case "American Express":
-		bool result = 1;
+	case 2:					// PAYMENT TYPE IS MASTERCARD.
+		bool result = true;
 		return results;
-	case 'Matercard':
-		bool result = 1;
+	case 3:					// PAYMENT TYPE IS AMERICAN EXPRESS.
+		bool result = true;
 		return result;
-	default: return result;
+	default:
+		cout << "Im sorry, your payment was unsuccessful\n";
+		return result;
 	}
 }
