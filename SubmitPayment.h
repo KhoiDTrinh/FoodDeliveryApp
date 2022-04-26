@@ -11,7 +11,7 @@ private:
 public: 
 	static const struct PaymentInformation
 	{
-		int ccNumber;
+		int ccNumber;//cardNumber
 		int experation;
 		int cvc;
 		string name;

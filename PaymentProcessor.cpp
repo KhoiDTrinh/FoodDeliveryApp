@@ -22,3 +22,32 @@ bool paypross::submitPayment(int paymentMethod, PaymentInformation paymentInfo, 
 		return result;
 	}
 }
+/*
+int PaymentProcessor::submitPayment(int paymentMethod, PaymentInformation paymentInfo, float totalCost){
+	ofstream payment;
+	payment.open("payement.txt", ios::app);
+
+	try{
+		switch(paymentMethod)
+		{
+			case 1;
+			payment << paymentInformation.name << "," << paymentInformation.cardNumber <<"," << paymentInformation.cvc <<"," << paymentInformation.experation << endl;
+			return 1;
+			case 2;
+			payment << paymentInformation.name << "," << paymentInformation.cardNumber <<"," << paymentInformation.cvc <<"," << paymentInformation.experation << endl;
+			return 1;
+			case 3;
+			payment << paymentInformation.name << "," << paymentInformation.cardNumber <<"," << paymentInformation.cvc <<"," << paymentInformation.experation << endl;
+			return 1;
+			default:
+				throw 0;
+				cout << invalid;
+		}
+
+	catch(int result)
+		return result;
+
+	}
+}
+
+*/
