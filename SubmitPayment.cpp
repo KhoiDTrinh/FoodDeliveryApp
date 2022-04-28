@@ -6,7 +6,7 @@ using namespace std;
 
 
 //submitOrder
-bool submitOrder(float totalCost)
+int submitOrder(float totalCost)
 {
 	int paymentMethod = getPaymentMethod();
 	PaymentProcessorClass::PaymentInformation paymentInfo = getPaymentInformation();

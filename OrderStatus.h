@@ -5,6 +5,6 @@ using namespace std;
 class OrderStatus {
 public:
 	 
-	void displayOrderStatus(int status);
+	static void displayOrderStatus(int status);
 	string orderStatusTimer();
 };
