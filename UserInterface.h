@@ -8,6 +8,9 @@
 #include "UpdateInfo.h"
 #include "Restaurant.h"
 #include "UpdateMenu.h"
+#include "Search.h"
+#include "Order.h"
+#include "CreateOrder.h"
 
 using namespace std;
 
@@ -29,20 +32,34 @@ private:
 	void display_update_menu_screen();
 
 
+	//-------------------- All Users Functions --------------------
 	void sign_in();
 	void sign_up();
+	void update_personal_info();
 
+	//-------------------- Customer Functions --------------------
+	void create_new_order();
+	int search_for_restaurant();
+	int add_remove_items_to_order(CreateOrder& create_order);
+	int add_item_to_order(CreateOrder& create_order);
+	int remove_item_from_order(CreateOrder& create_order);
+
+	
+	//-------------------- Driver Functions --------------------
+	
+
+	//-------------------- Restaurant Functions --------------------
 	void add_menu_item();
 	void update_menu_item();
 	void delete_menu_item();
 
-	void update_personal_info();
 
 
 	//-------------------- Helper Functions --------------------
 	void display_menu(vector<string>& menu_options, string menu_title);
 	int get_user_menu_selection(int max_valid_input);
 	void clear_screen();
+	void pause();
 	void get_user_info(vector<string>& user_input);
 	void get_restaurant_info(vector<string>& user_input);
 	void get_menu_item_info(vector<string>& user_input);

@@ -58,31 +58,31 @@ void UserInterface::display_home_screen() {
 }
 
 void UserInterface::display_customer_home_screen() {
-	vector<string> menu_options = { "Search for a Restaurant", "Create an Order", "Submit Order", "Check Order Status", "Update Personal Information", "Exit" };
-	display_menu(menu_options, "Main Menu");
+	vector<string> menu_options = { "Create a New Order", "Check Order Status", "Update Personal Information", "Exit" };
+	while (true)
+	{
+		display_menu(menu_options, "Main Menu");
 
-	cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
+		cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
 
-	int user_input = get_user_menu_selection(menu_options.size());
+		int user_input = get_user_menu_selection(menu_options.size());
 
-	switch (user_input) {
-	case 1:		//Search for a Restaurant
-		break;
-	case 2:		//Create an Order
-		break;
-	case 3:		//Submit Order
-		break;
-	case 4:		//Check Order Status
-		break;
-	case 5:		//Update Personal Information
-		update_personal_info();
-		break;
-	case 6:		//Exit
-		cout << "Closing the application.\n\n";
-		exit(0);
-	default:
-		cout << "Error encountered\nProgram terminating\n\n";
-		exit(1);
+		switch (user_input) {
+		case 1:		//Create an Order
+			create_new_order();
+			break;
+		case 2:		//Check Order Status
+			break;
+		case 3:		//Update Personal Information
+			update_personal_info();
+			break;
+		case 4:		//Exit
+			cout << "Closing the application.\n\n";
+			exit(0);
+		default:
+			cout << "Error encountered\nProgram terminating\n\n";
+			exit(1);
+		}
 	}
 }
 
@@ -173,6 +173,7 @@ void UserInterface::display_update_menu_screen() {
 
 
 
+//-------------------- All Users Functions --------------------
 
 void UserInterface::sign_in() {
 	clear_screen();
@@ -286,8 +287,132 @@ void UserInterface::sign_up() {
 	}
 }
 
+void UserInterface::update_personal_info() {
+	string input;
+	clear_screen();
+	vector<string> user_input;
+
+	cout << "Update Personal Info\n--------------------\n";
+	
+	user_input.push_back(user_record->get_username());
+	
+	cout << "Verify Your Password: ";
+	getline(cin, input);
+	user_input.push_back(input);
+
+	if (!UpdateInfo::validate_login(user_input[0], user_input[1], user_record)) {
+		cout << "Password was invalid\nPress ENTER to return to Main Menu\n";
+		getline(cin, input);
+		display_home_screen();
+		return;
+	}
+
+	user_input.push_back(to_string(user_record->get_account_type()));
+	get_user_info(user_input);
+
+	int result = UpdateInfo::update_user_info(user_input, user_record);
+
+	switch (result) {
+	case 1:		//successful update
+		cout << "User Information successfully updated\nPress ENTER to return to Main Menu\n";
+		getline(cin, input);
+		display_home_screen();
+		break;
+	case -1:	//user not found in database
+		cout << "User was not found in database\n";
+	case 0:
+	default:	//error
+		cout << "Error encountered\nProgram terminating\n\n";
+		exit(1);
+	}
+}
 
 
+
+
+//-------------------- Customer Functions --------------------
+void UserInterface::create_new_order() {
+	int restaurant_id = search_for_restaurant();
+	if (restaurant_id == -1)
+		return;
+
+	CreateOrder create_order;
+	create_order.start_new_order(user_record->get_user_id(), restaurant_id, user_record->get_address());
+
+	int result = add_remove_items_to_order(create_order);
+	if (result == -1)
+		return;
+}
+
+int UserInterface::search_for_restaurant() {
+	clear_screen();
+	cout << "Searching for Restaurant\n\n";
+	cout << "Please enter a search term: ";
+	string search_term;
+	getline(cin, search_term);
+
+	Search search;
+	vector<pair<int, string>> search_results = search.search(search_term);
+
+	vector<string> menu_options;
+	for (auto entry : search_results) {
+		menu_options.push_back(entry.second);
+	}
+	menu_options.push_back("Exit");
+
+	display_menu(menu_options, "Select a Restaurant to Begin Order");
+	int restaurant_selection = get_user_menu_selection(menu_options.size());
+
+	if (restaurant_selection == menu_options.size())
+		return -1;				//-1 indicates user exit
+
+	restaurant_selection = search_results[restaurant_selection - 1].first;
+
+	return restaurant_selection;
+}
+
+int UserInterface::add_remove_items_to_order(CreateOrder& create_order) {
+	vector<string> menu_options = {"Add Item to Order", "Remove Item from Order", "Checkout", "Exit"};
+	display_menu(menu_options, "Cart");
+
+	int menu_selection = get_user_menu_selection(menu_options.size());
+
+	switch (menu_selection) {
+	case 1:
+		add_item_to_order(create_order);
+		break;
+	case 2:
+		remove_item_from_order(create_order);
+		break;
+
+	case 3:
+
+		break;
+	case 4:
+		return -1;
+		break;
+	default:
+		cout << "Error encountered in add_remove_items_to_order\n\nTerminating application\n\n";
+		exit(1);
+	}
+}
+
+int UserInterface::add_item_to_order(CreateOrder& create_order) {
+	create_order.get_menu_options();
+}
+
+int UserInterface::remove_item_from_order(CreateOrder& create_order) {
+
+}
+
+//-------------------- Driver Functions --------------------
+
+
+
+
+
+
+//-------------------- Restaurant Functions --------------------
 void UserInterface::add_menu_item() {
 	clear_screen();
 	vector<string> user_input;
@@ -341,45 +466,6 @@ void UserInterface::delete_menu_item() {
 	UpdateMenu::delete_menu_item(restaurant_record, menu_item_list[user_selection - 1].first);
 }
 
-void UserInterface::update_personal_info() {
-	string input;
-	clear_screen();
-	vector<string> user_input;
-
-	cout << "Update Personal Info\n--------------------\n";
-	
-	user_input.push_back(user_record->get_username());
-	
-	cout << "Verify Your Password: ";
-	getline(cin, input);
-	user_input.push_back(input);
-
-	if (!UpdateInfo::validate_login(user_input[0], user_input[1], user_record)) {
-		cout << "Password was invalid\nPress ENTER to return to Main Menu\n";
-		getline(cin, input);
-		display_home_screen();
-		return;
-	}
-
-	user_input.push_back(to_string(user_record->get_account_type()));
-	get_user_info(user_input);
-
-	int result = UpdateInfo::update_user_info(user_input, user_record);
-
-	switch (result) {
-	case 1:		//successful update
-		cout << "User Information successfully updated\nPress ENTER to return to Main Menu\n";
-		getline(cin, input);
-		display_home_screen();
-		break;
-	case -1:	//user not found in database
-		cout << "User was not found in database\n";
-	case 0:
-	default:	//error
-		cout << "Error encountered\nProgram terminating\n\n";
-		exit(1);
-	}
-}
 
 
 
@@ -531,4 +617,10 @@ void UserInterface::get_restaurant_record() {
 		cout << "Error encountered\nRestaurant not found in database.\nProgram terminating\n\n";
 		exit(1);
 	}
+}
+
+void UserInterface::pause() {
+	string temp;
+	cout << "Press Enter to Continue\n\n";
+	getline(cin, temp);
 }

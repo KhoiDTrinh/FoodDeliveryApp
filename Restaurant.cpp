@@ -1,9 +1,11 @@
+
 #include "Restaurant.h"
 
 string Restaurant::restaurant_file_name = "Restaurants.txt";
 string Restaurant::menu_file_name = "MenuItems.txt";
 
-
+//-------------------- Public --------------------
+//-------------------- Constructor --------------------
 Restaurant::Restaurant(string record) {
 	stringstream stream(record);
 
@@ -20,10 +22,11 @@ Restaurant::Restaurant(string record) {
 	getline(stream, name, ',');
 	getline(stream, address, ',');
 	getline(stream, category, ',');
+
+	update_menu_item_list();
 }
 
-
-
+//-------------------- Getter/Setter --------------------
 vector<pair<int,string>> Restaurant::get_list_menu_item_names()
 {
 	vector<pair<int,string>> m_list;
@@ -32,6 +35,7 @@ vector<pair<int,string>> Restaurant::get_list_menu_item_names()
 	return m_list;
 }
 
+//-------------------- Static Functions --------------------
 int Restaurant::add_new_restaurant(vector<string>& user_input, Restaurant*& record) {
 	try {
 		ofstream file;
@@ -78,6 +82,7 @@ int Restaurant::get_restaurant_record(int id, Restaurant*& record) {
 	return 0;
 }
 
+//-------------------- Public Functions --------------------
 int Restaurant::add_menu_item(vector<string>& user_input, string database_entry) {
 	database_entry = to_string(get_next_menu_id()) + "," + to_string(restaurant_id) + "," + database_entry;
 
@@ -182,6 +187,35 @@ int Restaurant::delete_menu_item(int item_id) {
 	return 1;
 }
 
+void Restaurant::update_menu_item_list() {
+	menu_items.clear();
+	string record;
+	string i_id, r_id, name, desc, price;
+	
+	ifstream file;
+	file.open(menu_file_name);
+	getline(file, record); //Skipped header row in file
+	while (getline(file, record)) {
+		stringstream line(record);
+		getline(line, i_id, ',');
+		getline(line, r_id, ',');
+		getline(line, name, ',');
+		getline(line, desc, ',');
+		getline(line, price, ',');
+
+		if (stoi(r_id) == restaurant_id) {
+			menu_items.push_back(MenuItem(stoi(i_id),name,desc,stod(price)));
+		}
+	}
+	file.close();
+}
+
+
+
+
+
+//-------------------- Private --------------------
+//-------------------- Helper Functions --------------------
 void Restaurant::load_menu_items_to_array() {
 	ifstream file;
 	file.open(menu_file_name);
@@ -237,12 +271,6 @@ void Restaurant::add_menu_item_to_array(string record) {
 
 	menu_items.push_back(MenuItem(item_id,item_name,item_description,item_price));
 }
-
-
-
-
-
-
 
 int Restaurant::get_next_menu_id() {
 	string record;

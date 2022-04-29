@@ -30,9 +30,6 @@
     <ClCompile Include="Alert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cart.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CheckOrderStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -107,9 +104,6 @@
     <ClInclude Include="Alert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cart.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CheckOrderStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -173,6 +167,21 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="MenuItems.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Notifications.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="OrderItems.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Orders.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SavedCC.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SubmittedPayments.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
