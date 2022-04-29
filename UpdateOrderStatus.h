@@ -6,7 +6,7 @@
 #include "ConfirmDelivery.h"
 
 using namespace std;
-
+/*
 class UpdateOrderStatus{
 private:
 
@@ -14,4 +14,4 @@ public:
 	static int updateOrderStatus();
 	static int orderDelivered(ifstream &picture);
 
-};
+};*/

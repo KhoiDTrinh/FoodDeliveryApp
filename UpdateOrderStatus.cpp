@@ -1,5 +1,5 @@
 #include "UpdateOrderStatus.h"
-
+/*
 int UpdateOrderStatus::updateOrderStatus()
 {
 	int status;
@@ -15,3 +15,4 @@ int UpdateOrderStatus::orderDelivered(ifstream &picture)
 
 	return 0;
 }
+*/

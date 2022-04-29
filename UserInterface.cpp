@@ -33,7 +33,7 @@ void UserInterface::display_start_up_screen() {
 		break;
 	case 3:		//Exit
 		cout << "Closing the application.\n\n";
-		exit(0);
+		return;
 	default:
 		cout << "Error encountered\nProgram terminating\n\n";
 		exit(1);
@@ -78,7 +78,7 @@ void UserInterface::display_customer_home_screen() {
 			break;
 		case 4:		//Exit
 			cout << "Closing the application.\n\n";
-			exit(0);
+			return;
 		default:
 			cout << "Error encountered\nProgram terminating\n\n";
 			exit(1);
@@ -88,28 +88,30 @@ void UserInterface::display_customer_home_screen() {
 
 void UserInterface::display_driver_home_screen() {
 	vector<string> menu_options = { "Accept/Reject Delivery", "Check Order Status", "Confirm Delivery", "Update Personal Information", "Exit" };
-	display_menu(menu_options, "Main Menu");
+	while (true) {
+		display_menu(menu_options, "Main Menu");
 
-	cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
+		cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
 
-	int user_input = get_user_menu_selection(menu_options.size());
+		int user_input = get_user_menu_selection(menu_options.size());
 
-	switch (user_input) {
-	case 1:		//Accept/Reject Delivery
-		break;
-	case 2:		//Check Order Status
-		break;
-	case 3:		//Confirm Delivery
-		break;
-	case 4:		//Update Personal Information
-		update_personal_info();
-		break;
-	case 5:		//Exit
-		cout << "Closing the application.\n\n";
-		exit(0);
-	default:
-		cout << "Error encountered\nProgram terminating\n\n";
-		exit(1);
+		switch (user_input) {
+		case 1:		//Accept/Reject Delivery
+			break;
+		case 2:		//Check Order Status
+			break;
+		case 3:		//Confirm Delivery
+			break;
+		case 4:		//Update Personal Information
+			update_personal_info();
+			break;
+		case 5:		//Exit
+			cout << "Closing the application.\n\n";
+			return;
+		default:
+			cout << "Error encountered\nProgram terminating\n\n";
+			exit(1);
+		}
 	}
 }
 
@@ -136,40 +138,13 @@ void UserInterface::display_restaurant_home_screen() {
 		break;
 	case 6:		//Exit
 		cout << "Closing the application.\n\n";
-		exit(0);
+		return;
 	default:
 		cout << "Error encountered\nProgram terminating\n\n";
 		exit(1);
 	}
 }
 
-void UserInterface::display_update_menu_screen() {
-	vector<string> menu_options = { "Add Item", "Update Item", "Delete Item", "Exit"};
-	display_menu(menu_options, "Update Menu");
-
-	int user_input = get_user_menu_selection(menu_options.size());
-
-	switch (user_input) {
-	case 1:
-		add_menu_item();
-		display_update_menu_screen();
-		break;
-	case 2:
-		update_menu_item();
-		display_update_menu_screen();
-		break;
-	case 3:
-		delete_menu_item();
-		display_update_menu_screen();
-		break;
-	case 4:
-		display_restaurant_home_screen();
-		break;
-	default:
-		cout << "Error encountered\nProgram terminating\n\n";
-		exit(1);
-	}
-}
 
 
 
@@ -339,9 +314,12 @@ void UserInterface::create_new_order() {
 	CreateOrder create_order;
 	create_order.start_new_order(user_record->get_user_id(), restaurant_id, user_record->get_address());
 
-	int result = add_remove_items_to_order(create_order);
-	if (result == -1)
-		return;
+	int result;
+	while (true) {
+		result = add_remove_items_to_order(create_order);
+		if (result == -1)
+			break;
+	}
 }
 
 int UserInterface::search_for_restaurant() {
@@ -377,6 +355,7 @@ int UserInterface::add_remove_items_to_order(CreateOrder& create_order) {
 
 	int menu_selection = get_user_menu_selection(menu_options.size());
 
+	int result = 0;
 	switch (menu_selection) {
 	case 1:
 		add_item_to_order(create_order);
@@ -384,9 +363,10 @@ int UserInterface::add_remove_items_to_order(CreateOrder& create_order) {
 	case 2:
 		remove_item_from_order(create_order);
 		break;
-
 	case 3:
-
+		result = checkout_order(create_order);
+		if (result == 1)
+			return -1;
 		break;
 	case 4:
 		return -1;
@@ -397,12 +377,208 @@ int UserInterface::add_remove_items_to_order(CreateOrder& create_order) {
 	}
 }
 
-int UserInterface::add_item_to_order(CreateOrder& create_order) {
-	create_order.get_menu_options();
+int  UserInterface::add_item_to_order(CreateOrder& create_order) {
+	vector<pair<int,string>> menu  = create_order.get_menu_options();
+	
+	vector<string> menu_options;
+	for (auto item : menu)
+		menu_options.push_back(item.second);
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Add Item to Order");
+	
+	int menu_selection = get_user_menu_selection(menu_options.size());
+	if (menu_selection == menu_options.size())
+		return -1;
+
+	clear_screen();
+	auto item = create_order.get_item_by_id(menu[menu_selection - 1].first);
+	cout << item.item_name << endl;
+	cout << item.item_description << endl;
+	cout.precision(2);
+	cout << "$" << fixed << item.item_price << endl << endl;
+
+	int quantity = -1;
+	string user_input;
+	string comment;
+
+	cout << "How many would you like to order? ";
+	do {
+		getline(cin, user_input);
+		try {
+			quantity = stoi(user_input);
+
+			if (quantity < 0 || quantity > 99)
+				cout << "Input was out of range. Please enter a value between 0 and 99: ";
+		}
+		catch (const exception&) {
+			cout << "Input was invalid. Please enter a value between 0 and 99: ";
+		}
+	} while (quantity < 0 || quantity > 99);
+
+	if (quantity == 0)
+		return 0;
+
+	cout << "Enter any order comments or requests: ";
+	getline(cin, comment);
+
+	return create_order.add_item_to_order(item.menu_item_id, quantity, comment);
 }
 
 int UserInterface::remove_item_from_order(CreateOrder& create_order) {
+	auto order = create_order.get_order_items_list();
+	vector<string> menu_options;
+	for (auto item : order) {
+		string line = to_string(item.quantity) + "x ";
+		line += create_order.get_item_by_id(item.item_id).item_name;
+		menu_options.push_back(line);
+	}
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Remove Item from Order");
+	
+	int menu_selection = get_user_menu_selection(menu_options.size());
+	if (menu_selection == menu_options.size())
+		return -1;
 
+	return create_order.remove_item_from_order(order[menu_selection - 1]);
+}
+
+int UserInterface::checkout_order(CreateOrder& create_order) {
+	clear_screen();
+	cout << "Reviewing Order...\n\n";
+	auto order = create_order.get_order_items_list();
+	for (auto order_item : order) {
+		auto menu_item = create_order.get_item_by_id(order_item.item_id);
+		cout << menu_item.item_name << endl;
+		cout << "\t" << order_item.comments << endl;
+		cout.precision(2);
+		cout << "\t$" << fixed << menu_item.item_price << "   x" << order_item.quantity << endl;
+	}
+	cout << "\n----------------------------\n\n";
+
+	cout.precision(2);
+	double subtotal = create_order.get_total_price();
+	cout << fixed << setw(20) << left << "Subtotal: " << right << setw(10) << subtotal << endl;
+	cout << setw(20) << left << "Tax: " << right << setw(10) << subtotal * TAX_RATE << endl << endl;
+	cout << setw(20) << left << "Total: " << right << setw(10) << subtotal * (1 + TAX_RATE) << endl << endl;
+
+	string user_input;
+	bool valid = false;
+	cout << "Confirm Order? (y/n): ";
+	do {
+		getline(cin, user_input);
+		if (user_input.compare("y") == 0 || user_input.compare("n") == 0)
+			valid = true;
+		else
+			cout << "Please enter 'y' for yes or 'n' for no: ";
+	} while (!valid);
+
+	if (user_input.compare("n") == 0) {
+		return -1;
+	}
+
+	return select_payment_option(create_order);
+}
+
+int UserInterface::select_payment_option(CreateOrder& create_order) {
+	vector<string> menu_options = { "Use Saved Payment", "Enter new Credit Card Info", "Exit"};
+	display_menu(menu_options, "Cart");
+
+	int menu_selection = get_user_menu_selection(menu_options.size());
+
+	switch (menu_selection) {
+	case 1:
+		return use_saved_payment(create_order);
+		break;
+	case 2:
+		return enter_new_payment(create_order);
+		break;
+	case 3:
+		return -1;
+		break;
+	default:
+		cout << "Error encountered in add_remove_items_to_order\n\nTerminating application\n\n";
+		exit(1);
+	}
+}
+
+int UserInterface::use_saved_payment(CreateOrder& create_order) {
+	auto saved_payments = create_order.get_saved_payments(user_record->get_user_id());
+	vector<string> menu_options;
+	for (auto payment : saved_payments) {
+		menu_options.push_back(payment.first);
+	}
+	menu_options.push_back("Exit");
+
+	int menu_selection = get_user_menu_selection(menu_options.size());
+	if (menu_selection == menu_options.size())
+		return -1;
+
+	return create_order.submit_payment(saved_payments[menu_selection - 1].second, TAX_RATE, user_record->get_address());
+}
+
+int UserInterface::enter_new_payment(CreateOrder& create_order) {
+	string payment = to_string(user_record->get_user_id()) + ",";
+	
+	clear_screen();
+	cout << "New Payment Information\n";
+	cout << "-----------------------\n\n";
+	cout << "Credit card number: ";
+
+	bool valid = false;
+	uint64_t cc_value_test;
+	string user_input;
+	do {
+		getline(cin, user_input);
+		istringstream cc(user_input);
+		if (cc >> cc_value_test)
+			valid = true;
+		else
+			cout << "Please enter a valid credit card number: ";
+	} while (!valid);
+	payment += user_input + ",";
+
+	cout << "Expiration date (mmyy): ";
+	valid = false;
+	int exp_date;
+	do {
+		getline(cin, user_input);
+		istringstream exp(user_input);
+		if (exp >> exp_date && exp_date < 1300 && exp_date > 100)
+			valid = true;
+		else
+			cout << "Please enter a valid expiration date in mmyy format: ";
+	} while (!valid);
+	payment += user_input + ",";
+
+	cout << "CVV: ";
+	valid = false;
+	int cvv_test;
+	do {
+		getline(cin, user_input);
+		istringstream cvv(user_input);
+		if (cvv >> cvv_test && cvv_test < 1000 && cvv_test >= 0)
+			valid = true;
+		else
+			cout << "Please enter a valid three digit CVV: ";
+	} while (!valid);
+	payment += user_input + ",";
+
+	cout << "Name on credit card: ";
+	getline(cin, user_input);
+	payment += user_input;
+
+	cout << "Would you like to save this credit card for future use (y/n)? ";
+	valid = false;
+	do {
+		getline(cin, user_input);
+		if (user_input.compare("y") == 0 || user_input.compare("n") == 0)
+			valid = true;
+		else
+			cout << "Please enter y or n: ";
+	} while (!valid);
+
+
+	return create_order.submit_payment(payment, TAX_RATE, user_record->get_address(), user_input.compare("y") == 0);
 }
 
 //-------------------- Driver Functions --------------------
@@ -413,6 +589,32 @@ int UserInterface::remove_item_from_order(CreateOrder& create_order) {
 
 
 //-------------------- Restaurant Functions --------------------
+void UserInterface::display_update_menu_screen() {
+	vector<string> menu_options = { "Add Item", "Update Item", "Delete Item", "Exit"};
+	while (true) {
+		display_menu(menu_options, "Update Menu");
+
+		int user_input = get_user_menu_selection(menu_options.size());
+
+		switch (user_input) {
+		case 1:
+			add_menu_item();
+			break;
+		case 2:
+			update_menu_item();
+			break;
+		case 3:
+			delete_menu_item();
+			break;
+		case 4:
+			return;
+		default:
+			cout << "Error encountered\nProgram terminating\n\n";
+			exit(1);
+		}
+	}
+}
+
 void UserInterface::add_menu_item() {
 	clear_screen();
 	vector<string> user_input;

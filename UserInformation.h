@@ -21,6 +21,7 @@ public:
 	UserInformation(string record);
 
 	static string file_name;
+	static string cc_info_file_name;
 
 	int get_user_id() { return _user_id; }
 	string get_first_name() { return first_name; }

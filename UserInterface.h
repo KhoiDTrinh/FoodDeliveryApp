@@ -22,6 +22,8 @@ private:
 	const int UI_MENU_WIDTH = 50;		//Width of the user interface in number of characters
 	const int UI_MENU_HEIGHT = 15;		//Max number of items displayed in the user interface menu
 
+	const int TAX_RATE = 0.0825;
+
 	void display_start_up_screen();
 	void display_home_screen();
 
@@ -43,6 +45,10 @@ private:
 	int add_remove_items_to_order(CreateOrder& create_order);
 	int add_item_to_order(CreateOrder& create_order);
 	int remove_item_from_order(CreateOrder& create_order);
+	int checkout_order(CreateOrder& create_order);
+	int select_payment_option(CreateOrder& create_order);
+	int use_saved_payment(CreateOrder& create_order);
+	int enter_new_payment(CreateOrder& create_order);
 
 	
 	//-------------------- Driver Functions --------------------

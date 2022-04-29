@@ -210,7 +210,12 @@ void Restaurant::update_menu_item_list() {
 	file.close();
 }
 
-
+Restaurant::MenuItem Restaurant::get_item_by_id(int item_id){
+	for (MenuItem item : menu_items) {
+		if (item_id == item.menu_item_id)
+			return item;
+	}
+}
 
 
 

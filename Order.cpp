@@ -3,14 +3,15 @@
 using namespace std;
 
 string Order::orders_file_name = "Orders.txt";
+string Order::order_items_file_name = "OrderItems.txt";
 
 //-------------------- Constructor/Destructors --------------------
-Order::Order(int u_id = 0, int r_id = 0, string address = "") {
+Order::Order() {
 	order_id = get_next_order_id();
-	user_id = u_id;
+	user_id = 0;
 	driver_id = 0;
-	restaurant_id = r_id;
-	delivery_address = address;
+	restaurant_id = 0;
+	delivery_address = "";
 	order_status = -1;
 }
 
@@ -42,6 +43,57 @@ vector<pair<int, string>> Order::get_menu_options() {
 	return restaurant->get_list_menu_item_names();
 }
 
+int Order::add_item_to_order(int item_id, int quantity, string comment) {
+	order_items.push_back(OrderItem(item_id, quantity, comment));
+	return 1;
+}
+
+Restaurant::MenuItem Order::get_item_by_id(int item_id) {
+	load_restaurant_record();
+	return restaurant->get_item_by_id(item_id);
+}
+
+int Order::remove_item_from_order(Order::OrderItem item) {
+	for (auto itr = order_items.begin(); itr != order_items.end(); ++itr) {
+		if ((*itr) == item) {
+			order_items.erase(itr);
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+vector<Order::OrderItem> Order::get_order_items_list() {
+	return order_items;
+}
+
+int Order::generate_order(string address) {
+	string output = to_string(order_id) + ",";
+	output += to_string(user_id) + ",";
+	output += to_string(driver_id) + ",";
+	output += to_string(restaurant_id) + ",";
+	output += address + ",";
+	output += "0";
+
+	ofstream file;
+	file.open(orders_file_name, ios::app);
+	file << output << endl;
+	file.close();
+
+
+	file.open(order_items_file_name, ios::app);
+	for (auto item : order_items) {
+		output = to_string(order_id) + ",";
+		output += to_string(item.item_id) + ",";
+		output += to_string(item.quantity) + ",";
+		output += item.comments;
+		file << output << endl;
+	}
+	file.close();
+
+	return 1;
+}
 
 //-------------------- Private Helper Functions --------------------
 int Order::get_next_order_id() {

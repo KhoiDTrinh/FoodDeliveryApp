@@ -1,6 +1,7 @@
 #include "UserInformation.h"
 
 string UserInformation::file_name = "UserDatabase.txt";
+string UserInformation::cc_info_file_name = "SavedCC.txt";
 
 UserInformation::UserInformation(string record) {
 	stringstream stream(record);

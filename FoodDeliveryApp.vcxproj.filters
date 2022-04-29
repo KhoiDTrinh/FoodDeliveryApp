@@ -51,25 +51,16 @@
     <ClCompile Include="OrderStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PaymentProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PendingOrderReport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SearchResult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShowPendingOrder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SignIn_Up.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SubmitOrder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SubmitPayment.cpp">
@@ -125,25 +116,16 @@
     <ClInclude Include="OrderStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PaymentProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PendingOrderReport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SearchResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ShowPendingOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SignIn_Up.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SubmitOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SubmitPayment.h">
