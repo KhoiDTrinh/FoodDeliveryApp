@@ -1,10 +1,30 @@
 #include "AcceptDeclineOrder.h"
 
+
+/*
+Date: April 29, 2022
+Name: William Cao(Phuoc)
+Artifact Name: Accept Function
+
+Description:
+	Send Update Order Status Order ID, and update the status to Confirmed. Send over Notification to Restaurant
+	with Order ID, Restaurant ID, and sned mesasage "New Order".
+*/
 int AcceptDeclineOrder::accept_order(int order_id, int restaurant_id) {
 	Notification::delete_notification(order_id, restaurant_id, "new order");
 	return UpdateOrderStatus::update_order_status(order_id, OrderStatus::confirmed);
 }
 
+
+/*
+Date: April 29, 2022
+Name: William Cao(Phuoc)
+Artifact Name: Decline Function
+
+Description:
+	Send Update Order Status Order ID, and update the status to Declined. Send over Notification to Restaurant
+	with Order ID, Restaurant ID, and sned mesasage "New Order". 
+*/
 int AcceptDeclineOrder::decline_order(int order_id, int restaurant_id) {
 	Notification::delete_notification(order_id, restaurant_id, "new order");
 	Order order(order_id);
@@ -12,6 +32,15 @@ int AcceptDeclineOrder::decline_order(int order_id, int restaurant_id) {
 	return UpdateOrderStatus::update_order_status(order_id, OrderStatus::declined);
 }
 
+
+/*
+Date: April 29, 2022
+Name: William Cao(Phuoc), Khoi Trinh
+Artifact Name: New Order Requests Function
+
+Description:
+	The function read in notification file, then get new order from notification file.
+*/
 vector<int> AcceptDeclineOrder::get_new_order_requests(int restaurant_id) {
 	vector<int> order_ids;
 
