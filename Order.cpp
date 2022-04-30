@@ -163,7 +163,8 @@ int Order::update_order_status(int status) {
 
 int Order::find_driver() {
 	if (Alert::find_driver(order_id) == -1)
-		UpdateOrderStatus::update_order_status(order_id, 6);
+		return UpdateOrderStatus::update_order_status(order_id, OrderStatus::no_driver);
+	return 1;
 }
 
 int Order::update_driver(int new_driver_id) {
@@ -202,6 +203,7 @@ int Order::update_driver(int new_driver_id) {
 	for (string str : database)
 		outfile << str << endl;
 	outfile.close();
+	return 1;
 }
 
 string Order::get_restaurant_address() {

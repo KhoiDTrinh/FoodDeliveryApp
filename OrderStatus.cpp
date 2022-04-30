@@ -13,27 +13,27 @@ int OrderStatus::display_order_status(vector<pair<int, int>> order_statuses) {
 
 		//switch between the different types of status and prints time
 		switch (status) {
-		case 0:
+		case review:
 			cout << "Order is being Reviewed\n";
 			break;
-		case 1:
+		case confirmed:
 			cout << "Order has been Confirmed\n";
 			break;
-		case 2:
+		case prepared:
 			cout << "Order is being Prepared\n";
 			break;
-		case 3:
+		case completed:
 			cout << "Order has been Completed\n";
 			break;
-		case 4:
+		case delivered:
 			cout << "Order has been Delivered\n";
 			break;
-		case 5:
+		case declined:
 			cout << "Order has been declined by the restaurant\n";
 			break;
-		case 6:
+		case no_driver:
 			cout << "No driver available. Order canceled\n";
-		case 9:
+		case inactive:
 			cout << "Order is inactive\n";
 			break;
 		default:

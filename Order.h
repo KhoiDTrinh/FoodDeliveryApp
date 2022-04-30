@@ -36,7 +36,9 @@ public:
 
 	int update_driver(int driver_id);
 	int find_driver();
+	
 
+	static vector<int> get_active_orders_drivers();
 
 	//-------------------- Getter/Setter --------------------
 	int get_order_id() { return order_id; }

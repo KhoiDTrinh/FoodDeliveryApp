@@ -14,6 +14,8 @@
 #include "CheckOrderStatus.h"
 #include "OrderStatus.h"
 #include "AcceptRejectDelivery.h"
+#include "AcceptDeclineOrder.h"
+#include "ConfirmDelivery.h"
 
 using namespace std;
 
@@ -58,9 +60,12 @@ private:
 	//-------------------- Driver Functions --------------------
 	void accept_reject_delivery();
 	void check_order_status_driver();
+	void confirm_delivery();
 	
 
 	//-------------------- Restaurant Functions --------------------
+	void accept_decline_order();
+	void update_order_status();
 	void add_menu_item();
 	void update_menu_item();
 	void delete_menu_item();

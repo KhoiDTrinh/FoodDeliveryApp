@@ -104,6 +104,7 @@ void UserInterface::display_driver_home_screen() {
 			check_order_status_driver();
 			break;
 		case 3:		//Confirm Delivery
+			confirm_delivery();
 			break;
 		case 4:		//Update Personal Information
 			update_personal_info();
@@ -129,8 +130,10 @@ void UserInterface::display_restaurant_home_screen() {
 
 		switch (user_input) {
 		case 1:		//Accept/Decline Order
+			accept_decline_order();
 			break;
 		case 2:		//Update Order Status
+			update_order_status();
 			break;
 		case 3:		//Show Pending Orders
 			break;
@@ -641,11 +644,76 @@ void UserInterface::check_order_status_driver() {
 	pause();
 }
 
+void UserInterface::confirm_delivery() {
+	vector<int> order_ids = ConfirmDelivery::get_active_orders(user_record->get_user_id());
+	vector<string> menu_options;
+	for (int order_id : order_ids) {
+		Order order(order_id);
+		menu_options.push_back("Order #" + to_string(order_id) + ". Address: " + order.get_delivery_address());
+	}
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Choose Delivery to Confirm");
+
+	int menu_selection = get_user_menu_selection(menu_options.size());
+	if (menu_selection == menu_options.size())
+		return;
+
+	ConfirmDelivery::confirm_delivery(order_ids[menu_selection - 1]);
+}
 
 
 
 
 //-------------------- Restaurant Functions --------------------
+void UserInterface::accept_decline_order() {
+	vector<int> order_ids = AcceptDeclineOrder::get_new_order_requests(user_record->get_user_id());
+	vector<string> menu_options;
+	for (int order_id : order_ids) {
+		Order order(order_id);
+		menu_options.push_back("Order #" + to_string(order_id));
+	}
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Select an Order to View");
+	int menu_selection = get_user_menu_selection(menu_options.size());
+
+	if (menu_selection == menu_options.size())
+		return;
+
+	clear_screen();
+	Order order(order_ids[menu_selection - 1]);
+	vector<Order::OrderItem> order_items = order.get_order_items_list();
+
+	cout << "Order #" << order.get_order_id() << endl;
+	for (auto item : order_items) {
+		cout << order.get_item_by_id(item.item_id).item_name << endl;
+		cout << "\t" << item.comments << endl;
+		cout << "\tx" << item.quantity << endl << endl;
+	}
+	cout << "------------------------------------------------------\n\n";
+
+	string user_input;
+	bool valid = false;
+	cout << "Would you like to accept or decline the order (a/d)? ";
+	do {
+		getline(cin, user_input);
+		if (user_input.compare("a") == 0 || user_input.compare("d") == 0)
+			valid = true;
+		else
+			cout << "Please enter either a or d: ";
+	} while (!valid);
+
+	if (user_input.compare("a") == 0) {
+		AcceptDeclineOrder::accept_order(order.get_order_id());
+	}
+	else {
+		AcceptDeclineOrder::decline_order(order.get_order_id());
+	}
+}
+
+void UserInterface::update_order_status() {
+
+}
+
 void UserInterface::display_update_menu_screen() {
 	vector<string> menu_options = { "Add Item", "Update Item", "Delete Item", "Exit"};
 	while (true) {

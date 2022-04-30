@@ -20,7 +20,7 @@ int CheckOrderStatus::check_order_status_customer(int user_id) {
 		getline(line, u_id, ',');
 		if (stoi(u_id) == user_id) {
 			status = stoi(record.substr(record.length() - 1, 1));
-			if(status <= 6)
+			if(status <= OrderStatus::inactive)
 				order_statuses.push_back(pair<int, int>(stoi(o_id), status));
 		}
 	}
@@ -51,7 +51,7 @@ int CheckOrderStatus::check_order_status_driver(int driver_id) {
 		getline(line, d_id, ',');
 		if (stoi(d_id) == driver_id) {
 			status = stoi(record.substr(record.length() - 1, 1));
-			if (status <= 5)
+			if (status <= OrderStatus::delivered)
 				order_statuses.push_back(pair<int, int>(stoi(o_id), status));
 		}
 	}

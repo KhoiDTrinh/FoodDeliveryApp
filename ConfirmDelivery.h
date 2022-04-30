@@ -5,12 +5,12 @@
 #include "UpdateOrderStatus.h"
 
 using namespace std;
-/*
+
 class ConfirmDelivery {
 
 private:
 
 public:
-	static int delivery_Class(ifstream picture);
-
-};*/
+	static int confirm_delivery(int order_id);
+	static vector<int> get_active_orders(int driver_id);
+};

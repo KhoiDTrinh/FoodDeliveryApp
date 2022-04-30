@@ -28,7 +28,6 @@ vector<int> AcceptRejectDelivery::get_new_delivery_requests(int driver_id) {
 			getline(line, value, ',');
 			order_ids.push_back(stoi(value));
 		}
-		
 	}
 	file.close();
 
