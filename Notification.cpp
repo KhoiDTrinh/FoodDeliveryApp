@@ -1,5 +1,17 @@
 #include "Notification.h"
 
+/*
+Date: April 8, 2022
+Name: William Cao(Phuoc)
+Artifact Name: Notifiucation Class
+
+Description:
+	notify to driver, restaurant, and customer for case of event, like new delivery, ordered delivery, 
+	new order and restaurant declined order. The notification is include order id, user id, and message if necessary.
+	every thing will be send to notifications.txt file. 
+
+*/
+
 using namespace std;
 
 string Notification::notifications_file_name = "Notifications.txt";
@@ -44,9 +56,9 @@ int Notification::delete_notification(int order_id, int user_id, string message)
 	database.push_back(record);
 	while (getline(infile, record)) {
 		stringstream line(record);
-		getline(line, u_id, ',');
-		getline(line, o_id, ',');
-		getline(line, msg, ',');
+		getline(line, u_id, ',');		//user ID
+		getline(line, o_id, ',');		//Order ID
+		getline(line, msg, ',');		//Message
 
 		if (stoi(u_id) != user_id || stoi(o_id) != order_id || msg.compare(message) != 0)
 			database.push_back(record);

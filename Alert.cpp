@@ -1,9 +1,20 @@
 #include "Alert.h"
 
+
+/*
+Date: April 19, 2022
+Name: William Cao(Phuoc)
+Artifact Name: Alert Class
+
+Description: 
+	The class passes a list of drivers, Order ID, Customer ID, Restaurant ID to the Notification Class.
+	The class will find the driver in database and sned it over in a list to Notification Class.
+*/
+
 using namespace std;
 
 
-
+//Find driver by read the database and account type 1, then push it into a vector of user ID
 int Alert::find_driver(int order_id) {
 	vector<string> driver_list;
 
@@ -28,6 +39,8 @@ int Alert::find_driver(int order_id) {
 
 	srand(time(0));
 	int index = rand() % driver_list.size();
+
+	//send over information to notification class.
 	return Notification::send_new_delivery_alert_driver(order_id, stoi(driver_list[index]));
 }
 
