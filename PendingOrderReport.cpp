@@ -1,20 +1,29 @@
 #include "PendingOrderReport.h"
-
+/*Boundary class: Pending Order Report
+* Receives a vector of Order IDs which will be iterarated through to display 
+* each individual order
+* Mitzi Lezama
+* Khoi Trinh
+* 4/14/2022
+*/
 using namespace std;
 
-//Receives all information from 1 order
+//Receives a vector of all order IDS
 int PendingOrderReport::generate_pending_orders_report(vector<int> order_ids) {
 	cout << "Pending Orders Report\n";
 	cout << "---------------------\n\n";
-
+	//for loop iterates through each order ID
 	for (int order_id : order_ids)
+		//send one order ID to display_order so it can be displayed individually
 		display_order(order_id);
 	return 1;
 }
 
+//received an individual order ID
 void PendingOrderReport::display_order(int order_id) {
 	cout << "Order ID: " << order_id << endl;
 	Order order(order_id);
+	//get vector of Items from Order class
 	vector<Order::OrderItem> items_list = order.get_order_items_list();
 
 	//for loop prints items
