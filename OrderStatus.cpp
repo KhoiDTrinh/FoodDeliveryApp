@@ -1,37 +1,44 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "OrderStatus.h"
-#include <string>
-#include<iostream>
-#include<ctime>
 
 using namespace std;
 
-//fuction receives int status
-void OrderStatus::displayOrderStatus(int status) {
-	string now;
+//function receives vector of pair<int,int> of order_id, status
+int OrderStatus::display_order_status(vector<pair<int, int>> order_statuses) {
+	cout << "Displaying order status\n";
+	cout << "-----------------------\n\n";
 
-	//switch between the different types of status and prints time
-	switch (status) {
+	for (auto order : order_statuses) {
+		int status = order.second;					//second stores the status of the order
+		cout << "Order #" << order.first << endl;	//first stores the order id
+
+		//switch between the different types of status and prints time
+		switch (status) {
 		case 0:
-		cout << "Order is being Reviewed\n";
-		cout << now << endl;
-		break;
+			cout << "Order is being Reviewed\n";
+			break;
 		case 1:
-		cout << "Order has been Confirmed\n";
-		cout << now << endl;
-		break;
+			cout << "Order has been Confirmed\n";
+			break;
 		case 2:
-		cout << "Order is being Prepared\n"; 
-		cout << now << endl;
-		break;
+			cout << "Order is being Prepared\n";
+			break;
 		case 3:
-		cout << "Order has been Completed\n"; 
-		cout << now << endl;
-		break;
+			cout << "Order has been Completed\n";
+			break;
 		case 4:
-		cout << "Order has been Delivered\n"; 
-		break;
+			cout << "Order has been Delivered\n";
+			break;
+		case 5:
+			cout << "Order has been declined by the restaurant\n";
+			break;
+		case 9:
+			cout << "Order is inactive\n";
+			break;
 		default:
-		cout << "Error";
+			cout << "Invalid argument in OrderStatus::display_order_status()\n\n";
+		}
+
 	}
+
+	return 1;
 }

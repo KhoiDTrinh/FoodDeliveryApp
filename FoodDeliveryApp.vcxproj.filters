@@ -21,12 +21,6 @@
     <ClCompile Include="UserInformation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Accept_DeclineOrder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Accept_RejectDelivery.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Alert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,18 +72,18 @@
     <ClCompile Include="UserInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AcceptRejectDelivery.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AcceptDeclineOrder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UserInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UserInformation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Accept_DeclineOrder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Accept_RejectDelivery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Alert.h">
@@ -138,6 +132,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UpdateOrderStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AcceptRejectDelivery.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AcceptDeclineOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

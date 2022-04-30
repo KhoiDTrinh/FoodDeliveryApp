@@ -17,7 +17,7 @@ void UserInterface::run() {
 }
 
 
-//-------------------- Private Functions --------------------
+//-------------------- Main Menus --------------------
 
 void UserInterface::display_start_up_screen() {
 	vector<string> menu_options = { "Sign In","Create an Account","Exit" };
@@ -72,6 +72,7 @@ void UserInterface::display_customer_home_screen() {
 			create_new_order();
 			break;
 		case 2:		//Check Order Status
+			check_order_status_customer();
 			break;
 		case 3:		//Update Personal Information
 			update_personal_info();
@@ -97,8 +98,10 @@ void UserInterface::display_driver_home_screen() {
 
 		switch (user_input) {
 		case 1:		//Accept/Reject Delivery
+			accept_reject_delivery();
 			break;
 		case 2:		//Check Order Status
+			check_order_status_driver();
 			break;
 		case 3:		//Confirm Delivery
 			break;
@@ -306,6 +309,13 @@ void UserInterface::update_personal_info() {
 
 
 //-------------------- Customer Functions --------------------
+void UserInterface::check_order_status_customer() {
+	clear_screen();
+	CheckOrderStatus::check_order_status_customer(user_record->get_user_id());
+	pause();
+}
+
+//-------------------- Create Order  --------------------
 void UserInterface::create_new_order() {
 	int restaurant_id = search_for_restaurant();
 	if (restaurant_id == -1)
@@ -581,8 +591,17 @@ int UserInterface::enter_new_payment(CreateOrder& create_order) {
 	return create_order.submit_payment(payment, TAX_RATE, user_record->get_address(), user_input.compare("y") == 0);
 }
 
-//-------------------- Driver Functions --------------------
 
+//-------------------- Driver Functions --------------------
+void UserInterface::accept_reject_delivery() {
+
+}
+
+void UserInterface::check_order_status_driver() {
+	clear_screen();
+	CheckOrderStatus::check_order_status_driver(user_record->get_user_id());
+	pause();
+}
 
 
 

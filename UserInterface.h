@@ -11,6 +11,9 @@
 #include "Search.h"
 #include "Order.h"
 #include "CreateOrder.h"
+#include "CheckOrderStatus.h"
+#include "OrderStatus.h"
+#include "Accept_RejectDelivery.h"
 
 using namespace std;
 
@@ -40,6 +43,7 @@ private:
 	void update_personal_info();
 
 	//-------------------- Customer Functions --------------------
+	void check_order_status_customer();
 	void create_new_order();
 	int search_for_restaurant();
 	int add_remove_items_to_order(CreateOrder& create_order);
@@ -52,6 +56,8 @@ private:
 
 	
 	//-------------------- Driver Functions --------------------
+	void accept_reject_delivery();
+	void check_order_status_driver();
 	
 
 	//-------------------- Restaurant Functions --------------------
