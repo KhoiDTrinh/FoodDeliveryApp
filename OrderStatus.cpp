@@ -1,5 +1,11 @@
 #include "OrderStatus.h"
-
+/*Boundary class: Order Status 
+* receives a vector pair of order_id and status
+* and a switch case is used to print out order status
+* Mitzi Lezama
+* Khoi Trinh 
+* 4/14/2022
+*/
 using namespace std;
 
 //function receives vector of pair<int,int> of order_id, status
