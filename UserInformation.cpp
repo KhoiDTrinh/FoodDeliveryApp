@@ -3,6 +3,10 @@
 string UserInformation::file_name = "UserDatabase.txt";
 string UserInformation::cc_info_file_name = "SavedCC.txt";
 
+//UserInformation Constructor from a Record
+//Creates a UserInformation object based on a record from database
+//Khoi Trinh
+//04/14/2022
 UserInformation::UserInformation(string record) {
 	stringstream stream(record);
 
@@ -36,6 +40,10 @@ UserInformation::UserInformation(string record) {
 	getline(stream, email, ',');
 }
 
+//Search for Username
+//Searches database of users to see if the username is already taken
+//Khoi Trinh
+//04/14/2022
 bool UserInformation::search_username(string username) {
 	string input;
 	string temp_user;
@@ -56,6 +64,10 @@ bool UserInformation::search_username(string username) {
 	return false;
 }
 
+//Get User Record
+//Searches the database for user based on username, stores the data in the UserInformation object passed by reference
+//Khoi Trinh
+//04/14/2022
 int UserInformation::get_user_record(string username, UserInformation*& user_record) {
 	string input;
 	string temp_user;
@@ -77,6 +89,11 @@ int UserInformation::get_user_record(string username, UserInformation*& user_rec
 	return -2;
 }
 
+//Add User Record
+//Creates a database record based on given array of strings, writes the value to database
+// and creates new UserInformation object stored in the user_record passed by reference
+//Khoi Trinh
+//04/14/2022
 int UserInformation::add_user_record(vector<string>& user_info, UserInformation*& user_record) {
 	user_info[1] = hash_password(user_info[1]);
 
@@ -94,6 +111,7 @@ int UserInformation::add_user_record(vector<string>& user_info, UserInformation*
 		file << output << endl;
 		file.close();
 
+		//Creates UserInformation object and stores it in the user_record passed by reference
 		user_record = new UserInformation(output);
 		return 1;
 	}
@@ -102,9 +120,15 @@ int UserInformation::add_user_record(vector<string>& user_info, UserInformation*
 	}
 }
 
+//Update User Record
+//Updates user record in database based on new information passed in an array of strings
+//Khoi Trinh
+//04/14/2022
 int UserInformation::update_user_record(vector<string>& user_info) {
 	user_info[1] = hash_password(user_info[1]);
 
+	//C++ cannot rewrite a specific line in a file
+	//Copies all unchanged lines in file to a vector
 	vector<string> database;
 	try {
 		ifstream file;
@@ -117,6 +141,9 @@ int UserInformation::update_user_record(vector<string>& user_info) {
 			stringstream sstream(line);
 			getline(sstream, user_id, ',');
 			getline(sstream, username, ',');
+
+			//If username of that record matches the passed user_name
+			//Create a new record and push that to databse instead of the original record
 			if(username.compare(user_info[0]))
 				database.push_back(line);
 			else {
@@ -146,6 +173,7 @@ int UserInformation::update_user_record(vector<string>& user_info) {
 	first_name = user_info[2];
 	last_name = user_info[3];
 
+	//Rewrite entire database back to the file
 	try {
 		ofstream file;
 		file.open(file_name);
@@ -160,11 +188,19 @@ int UserInformation::update_user_record(vector<string>& user_info) {
 	}
 }
 
+//Hash password
+//Simple hash function to hash passwords
+//Khoi Trinh
+//04/14/2022
 string UserInformation::hash_password(string password) {
 	hash<string> str_hash;
 	return to_string(str_hash(password));
 }
 
+//Get Next User Id
+//Checks database for highest user id and returns the next value
+//Khoi Trinh
+//04/14/2022
 int UserInformation::get_next_user_id() {
 	string record;
 	string temp_id;
