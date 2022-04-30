@@ -1,18 +1,6 @@
 #include "UpdateOrderStatus.h"
-/*
-int UpdateOrderStatus::updateOrderStatus()
-{
-	int status;
 
-	cout << "New Order Status: " << endl; 
-	cin >> status;
-
-	return Order::updateOrderStatus(status);
+int UpdateOrderStatus::update_order_status(int order_id, int status) {
+	Order order(order_id);
+	return order.update_order_status(status);
 }
-
-int UpdateOrderStatus::orderDelivered(ifstream &picture)
-{
-
-	return 0;
-}
-*/

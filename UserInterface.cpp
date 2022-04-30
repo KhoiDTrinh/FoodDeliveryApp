@@ -120,31 +120,33 @@ void UserInterface::display_driver_home_screen() {
 
 void UserInterface::display_restaurant_home_screen() {
 	vector<string> menu_options = { "Accept/Decline Order", "Update Order Status", "Show Pending Orders", "Update Menu", "Update Personal Information", "Exit"};
-	display_menu(menu_options, "Main Menu");
+	while (true) {
+		display_menu(menu_options, "Main Menu");
 
-	cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
+		cout << "Welcome " << user_record->get_first_name() << " " << user_record->get_last_name() << endl << endl;
 
-	int user_input = get_user_menu_selection(menu_options.size());
+		int user_input = get_user_menu_selection(menu_options.size());
 
-	switch (user_input) {
-	case 1:		//Accept/Decline Order
-		break;
-	case 2:		//Update Order Status
-		break;
-	case 3:		//Show Pending Orders
-		break;
-	case 4:		//Update Menu
-		display_update_menu_screen();
-		break;
-	case 5:		//Update Personal Information
-		update_personal_info();
-		break;
-	case 6:		//Exit
-		cout << "Closing the application.\n\n";
-		return;
-	default:
-		cout << "Error encountered\nProgram terminating\n\n";
-		exit(1);
+		switch (user_input) {
+		case 1:		//Accept/Decline Order
+			break;
+		case 2:		//Update Order Status
+			break;
+		case 3:		//Show Pending Orders
+			break;
+		case 4:		//Update Menu
+			display_update_menu_screen();
+			break;
+		case 5:		//Update Personal Information
+			update_personal_info();
+			break;
+		case 6:		//Exit
+			cout << "Closing the application.\n\n";
+			return;
+		default:
+			cout << "Error encountered\nProgram terminating\n\n";
+			exit(1);
+		}
 	}
 }
 
@@ -594,7 +596,43 @@ int UserInterface::enter_new_payment(CreateOrder& create_order) {
 
 //-------------------- Driver Functions --------------------
 void UserInterface::accept_reject_delivery() {
+	vector<int> order_ids = AcceptRejectDelivery::get_new_delivery_requests(user_record->get_user_id());
+	vector<string> menu_options;
+	for (int order_id : order_ids) {
+		Order order(order_id);
+		menu_options.push_back("Order #" + to_string(order_id) + ". Address: " + order.get_delivery_address());
+	}
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Select a New Delivery Request");
+	int menu_selection = get_user_menu_selection(menu_options.size());
 
+	if (menu_selection == menu_options.size())
+		return;
+
+	clear_screen();
+	Order order(order_ids[menu_selection - 1]);
+	cout << "Order #" << order.get_order_id() << endl;
+	cout << "Customer Address: " << order.get_delivery_address() << endl;
+	cout << "Restaurant Address: " << order.get_restaurant_address() << endl;
+	cout << "------------------------------------------------------\n\n";
+
+	string user_input;
+	bool valid = false;
+	cout << "Would you like to accept or decline the delivery (a/d)? ";
+	do {
+		getline(cin, user_input);
+		if (user_input.compare("a") == 0 || user_input.compare("d") == 0)
+			valid = true;
+		else
+			cout << "Please enter either a or d: ";
+	} while (!valid);
+
+	if (user_input.compare("a") == 0) {
+		AcceptRejectDelivery::accept_delivery(order.get_driver_id(), order.get_order_id());
+	}
+	else {
+		AcceptRejectDelivery::reject_delivery(order.get_order_id());
+	}
 }
 
 void UserInterface::check_order_status_driver() {

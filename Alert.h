@@ -3,6 +3,9 @@
 #include <iomanip>
 #include <fstream>
 #include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include<time.h>
 #include "Notification.h"
 #include "UserInformation.h"
 
@@ -12,8 +15,8 @@ class Alert {
 private:
 
 public:
-	static int find_Driver(int order_ID);
-	static int customer_Delivery(ifstream &picture);
-	static int restaurant_Decline(string reason);
-	static int restaurant_New_Order(string name);
+	static int find_driver(int order_id);
+	static int customer_delivery(int order_id, int customer_id);
+	static int restaurant_decline(int order_id, int customer_id);
+	static int restaurant_new_order(int order_id, int restaurant_id);
 };

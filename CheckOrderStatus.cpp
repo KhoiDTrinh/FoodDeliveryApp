@@ -20,7 +20,7 @@ int CheckOrderStatus::check_order_status_customer(int user_id) {
 		getline(line, u_id, ',');
 		if (stoi(u_id) == user_id) {
 			status = stoi(record.substr(record.length() - 1, 1));
-			if(status <= 5)
+			if(status <= 6)
 				order_statuses.push_back(pair<int, int>(stoi(o_id), status));
 		}
 	}

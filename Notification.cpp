@@ -2,96 +2,32 @@
 
 using namespace std;
 
-//Send to file instead of console. (Notification.txt)
+string Notification::notifications_file_name = "Notifications.txt";
 
-//Try and catch here
-ofstream alert;
-
-int Notification::send_Delivery_Alert_Driver(int order_ID, string driver_record) {
-	alert.open("alert.txt", ios::app);
-
-	try
-	{
-		alert << "New Order:\t" << order_ID;
-		if (Alert::find_Driver(order_ID) == false){
-			throw 0;
-		}
-		return 1;
-	}
-	catch (int value)
-	{
-		return value; 
-		alert << "Error"<<endl;
-	}
-
-	alert.close();
+int Notification::send_new_delivery_alert_driver(int order_id, int driver_id) {
+	return send_notification(order_id, driver_id, "new delivery");
 }
 
 
-int Notification::send_Delivery_Alert_Customer(ifstream &picture) {
-	
-	alert.open("alert.txt", ios::app);
-	picture.open("picture.txt");
-	try
-	{
-		alert << "You recieved a new Order.\n";
-		if (Alert::customer_Delivery(picture) == false) {
-			throw 0;
-		}
-		return 1;
-	}
-	catch (int value)
-	{
-		alert << "error";
-		return value;
-	}
-
-	alert.close();
-	picture.close();
+int Notification::send_delivered_alert_customer(int order_id, int customer_id) {
+	return send_notification(order_id, customer_id, "order delivered");
 }
 
 
-int Notification::send_Order_Alert_Restaurant(string name, string customer_record) {
-
-	alert.open("alert.txt", ios::app);
-	try 
-	{
-		alert << "You recieved a new Order.\n" << name << endl;
-		if (Alert::restaurant_New_Order(name) == false) {
-			throw 0;
-		}
-		return 1;
-	}
-	catch (int value)
-	{
-		alert << "error";
-		return value;
-	}
-
-	alert.close();
+int Notification::send_order_notification_restaurant(int order_id, int restaurant_id) {
+	return send_notification(order_id, restaurant_id, "new order");
 }
 	
 
-int Notification::send_Restaurant_Decline_Customer(string reason) {
-	
-	alert.open("alert.txt", ios::app);
+int Notification::send_restaurant_decline_customer(int order_id, int customer_id) {
+	return send_notification(order_id, customer_id, "retaurant declined order");
+}
 
-	try
-	{
-		alert << "The Order was canceled due to: " << reason << endl;
-		alert << "Sorry for the inconvenience.";
-
-		if (Alert::restaurant_Decline(reason) == false) {
-			throw 0;
-		}
-		return 1;
-	}
-	catch (int value)
-	{
-		alert << "error";
-		return value;
-	}
-
-	alert.close();
-
+int Notification::send_notification(int order_id, int user_id, string message) {
+	string output = to_string(user_id) + "," + to_string(order_id) + "," + message;
+	ofstream file;
+	file.open(notifications_file_name, ios::app);
+	file << output << endl;
+	file.close();
+	return 1;
 }

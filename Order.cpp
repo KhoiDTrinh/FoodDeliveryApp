@@ -30,6 +30,38 @@ Order::Order(string record) {
 	delivery_address = value;
 	getline(line, value, ',');
 	order_status = stoi(value);
+	
+	load_restaurant_record();
+}
+
+Order::Order(int id) {
+	string record;
+	string value;
+	
+	ifstream file;
+	file.open(orders_file_name);
+	getline(file, record);
+	while (getline(file, record)) {
+		stringstream line(record);
+		getline(line, value, ',');
+		if (id == stoi(value)) {
+			user_id = id;
+			getline(line, value, ',');
+			user_id = stoi(value);
+			getline(line, value, ',');
+			driver_id = stoi(value);
+			getline(line, value, ',');
+			restaurant_id = stoi(value);
+			getline(line, value, ',');
+			delivery_address = value;
+			getline(line, value, ',');
+			order_status = stoi(value);
+			break;
+		}
+	}
+	file.close();
+
+	load_restaurant_record();
 }
 
 Order::~Order() {
@@ -92,8 +124,91 @@ int Order::generate_order(string address) {
 	}
 	file.close();
 
+	find_driver();
+	Alert::restaurant_new_order(order_id, restaurant_id);
+
 	return 1;
 }
+
+
+
+int Order::update_order_status(int status) {
+	vector<string> database;
+
+	string record;
+	string o_id;
+
+	ifstream infile;
+	infile.open(orders_file_name);
+	getline(infile, record);
+	database.push_back(record);
+	while (getline(infile, record)) {
+		stringstream line(record);
+		getline(line, o_id, ',');
+		if (stoi(o_id) == order_id)
+			record = record.substr(0, record.length() - 1) + to_string(status);
+		database.push_back(record);
+	}
+	infile.close();
+
+	ofstream outfile;
+	outfile.open(orders_file_name);
+	for (string str : database)
+		outfile << str << endl;
+	outfile.close();
+	return 1;
+}
+
+
+
+int Order::find_driver() {
+	if (Alert::find_driver(order_id) == -1)
+		UpdateOrderStatus::update_order_status(order_id, 6);
+}
+
+int Order::update_driver(int new_driver_id) {
+	vector<string> database;
+
+	string record;
+	string o_id, u_id, d_id, r_id, address, status;
+
+	ifstream infile;
+	infile.open(orders_file_name);
+	getline(infile, record);
+	database.push_back(record);
+	while (getline(infile, record)) {
+		stringstream line(record);
+		getline(line, o_id, ',');
+		getline(line, u_id, ',');
+		getline(line, d_id, ',');
+		getline(line, r_id, ',');
+		getline(line, address, ',');
+		getline(line, status, ',');
+
+		if (stoi(o_id) == order_id) {
+			record = o_id + ",";
+			record += u_id + ",";
+			record += to_string(new_driver_id) + ",";
+			record += r_id + ",";
+			record += address + ",";
+			record += status;
+		}
+		database.push_back(record);
+	}
+	infile.close();
+
+	ofstream outfile;
+	outfile.open(orders_file_name);
+	for (string str : database)
+		outfile << str << endl;
+	outfile.close();
+}
+
+string Order::get_restaurant_address() {
+	load_restaurant_record();
+	return restaurant->get_restaurant_address();
+}
+
 
 //-------------------- Private Helper Functions --------------------
 int Order::get_next_order_id() {

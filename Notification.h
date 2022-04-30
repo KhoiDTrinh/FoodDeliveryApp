@@ -8,12 +8,11 @@ using namespace std;
 
 class Notification {
 private:
-	
-
+	static int send_notification(int order_id, int user_id, string message);
 public:
-	static int send_Delivery_Alert_Driver(int order_ID, string driver_record);
-	static int send_Delivery_Alert_Customer(ifstream &picture);
-	static int send_Order_Alert_Restaurant(string name, string customer_record);
-	static int send_Restaurant_Decline_Customer(string reason);
-
+	static string notifications_file_name;
+	static int send_new_delivery_alert_driver(int order_id, int driver_id);
+	static int send_delivered_alert_customer(int order_id, int customer_id);
+	static int send_order_notification_restaurant(int order_id, int restaurant_id);
+	static int send_restaurant_decline_customer(int order_id, int customer_id);
 };

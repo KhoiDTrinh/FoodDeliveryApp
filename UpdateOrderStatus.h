@@ -3,15 +3,10 @@
 #include <fstream>
 #include <string>
 #include "Order.h"
-#include "ConfirmDelivery.h"
 
 using namespace std;
-/*
+
 class UpdateOrderStatus{
-private:
-
 public:
-	static int updateOrderStatus();
-	static int orderDelivered(ifstream &picture);
-
-};*/
+	static int update_order_status(int order_id, int status);
+};

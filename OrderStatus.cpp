@@ -31,6 +31,8 @@ int OrderStatus::display_order_status(vector<pair<int, int>> order_statuses) {
 		case 5:
 			cout << "Order has been declined by the restaurant\n";
 			break;
+		case 6:
+			cout << "No driver available. Order canceled\n";
 		case 9:
 			cout << "Order is inactive\n";
 			break;

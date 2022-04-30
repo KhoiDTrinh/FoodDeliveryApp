@@ -32,6 +32,11 @@ public:
 	int remove_item_from_order(Order::OrderItem item);
 	int generate_order(string address);
 
+	int update_order_status(int status);
+
+	int update_driver(int driver_id);
+	int find_driver();
+
 
 	//-------------------- Getter/Setter --------------------
 	int get_order_id() { return order_id; }
@@ -45,10 +50,12 @@ public:
 	void set_delivery_address(string address) { delivery_address = address; }
 	Restaurant::MenuItem get_item_by_id(int item_id);
 	vector<Order::OrderItem> get_order_items_list();
+	string get_restaurant_address();
 
 	//-------------------- Constructor/Destructors --------------------
 	Order();
 	Order(string record);
+	Order(int id);
 	~Order();
 private:
 	//-------------------- Private Attributes --------------------
