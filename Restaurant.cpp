@@ -6,6 +6,10 @@ string Restaurant::menu_file_name = "MenuItems.txt";
 
 //-------------------- Public --------------------
 //-------------------- Constructor --------------------
+//Constructor from Record
+//Constucts a Restaurant object based on a database record
+//Khoi Trinh
+//04/23/22
 Restaurant::Restaurant(string record) {
 	stringstream stream(record);
 
@@ -27,6 +31,10 @@ Restaurant::Restaurant(string record) {
 }
 
 //-------------------- Getter/Setter --------------------
+//Get List of Menu Item Names
+//Returns a vector of pair of item id and item name
+//Khoi Trinh
+//04/23/22
 vector<pair<int,string>> Restaurant::get_list_menu_item_names()
 {
 	vector<pair<int,string>> m_list;
@@ -38,6 +46,10 @@ vector<pair<int,string>> Restaurant::get_list_menu_item_names()
 }
 
 //-------------------- Static Functions --------------------
+//Add New Restaurant
+//Adds a new restaurant to the database and creates a new Restaurant object and stores in the record passed by reference
+//Khoi Trinh
+//04/23/22
 int Restaurant::add_new_restaurant(vector<string>& user_input, Restaurant*& record) {
 	try {
 		ofstream file;
@@ -52,6 +64,7 @@ int Restaurant::add_new_restaurant(vector<string>& user_input, Restaurant*& reco
 		file << output << endl;
 		file.close();
 
+		//Record is passed by reference, so pass the data by storing into the record
 		record = new Restaurant(output);
 
 		return 1;
@@ -61,6 +74,10 @@ int Restaurant::add_new_restaurant(vector<string>& user_input, Restaurant*& reco
 	}
 }
 
+//Get Restaurant Record
+//Searches for restaurant in database by restaurant_id, then stores in the record pointer passed by reference
+//Khoi Trinh
+//04/23/22
 int Restaurant::get_restaurant_record(int id, Restaurant*& record) {
 	string input;
 	string temp_id;
@@ -72,6 +89,8 @@ int Restaurant::get_restaurant_record(int id, Restaurant*& record) {
 		getline(line, temp_id, ',');
 		if (temp_id.compare(to_string(id)) == 0) {
 			file.close();
+
+			//record is passed by reference, so create new object and pass back by storing into record
 			record = new Restaurant(input);
 
 			record->load_menu_items_to_array();
@@ -85,6 +104,10 @@ int Restaurant::get_restaurant_record(int id, Restaurant*& record) {
 }
 
 //-------------------- Public Functions --------------------
+//Add Menu Item
+//Adds item to menu database, and to active restaurant object's menu array
+//Khoi Trinh
+//04/23/22
 int Restaurant::add_menu_item(vector<string>& user_input, string database_entry) {
 	database_entry = to_string(get_next_menu_id()) + "," + to_string(restaurant_id) + "," + database_entry;
 
@@ -98,6 +121,10 @@ int Restaurant::add_menu_item(vector<string>& user_input, string database_entry)
 	return 1;
 }
 
+//Update Menu Item
+//Updates a menu item in the database, and updates it in the active Restaurant object's array
+//Khoi Trinh
+//04/23/22
 int Restaurant::update_menu_item(vector<string>& user_input, int item_id, string database_entry) {
 	database_entry = to_string(get_next_menu_id()) + "," + to_string(restaurant_id) + "," + database_entry;
 
@@ -134,7 +161,7 @@ int Restaurant::update_menu_item(vector<string>& user_input, int item_id, string
 		outfile << str << endl;
 	outfile.close();
 
-
+	//Search for menu item in array and update it
 	for (auto i : menu_items) {
 		if (i.menu_item_id == item_id) {
 			i.item_name = user_input[0];
@@ -147,6 +174,10 @@ int Restaurant::update_menu_item(vector<string>& user_input, int item_id, string
 	return 1;
 }
 
+//Delete Menu Item
+//Deletes a menu item from database and from active object's array
+//Khoi Trinh
+//04/23/22
 int Restaurant::delete_menu_item(int item_id) {
 	string record, value;
 	vector<string> database;
@@ -189,6 +220,10 @@ int Restaurant::delete_menu_item(int item_id) {
 	return 1;
 }
 
+//Update Menu Item List
+//Clears the menu array and reloads from database
+//Khoi Trinh
+//04/23/22
 void Restaurant::update_menu_item_list() {
 	menu_items.clear();
 	string record;
@@ -212,6 +247,10 @@ void Restaurant::update_menu_item_list() {
 	file.close();
 }
 
+//Get Item by ID
+//Returns MenuItem based on item_id
+//Khoi Trinh
+//04/23/22
 Restaurant::MenuItem Restaurant::get_item_by_id(int item_id){
 	for (MenuItem item : menu_items) {
 		if (item_id == item.menu_item_id)
@@ -223,6 +262,10 @@ Restaurant::MenuItem Restaurant::get_item_by_id(int item_id){
 
 //-------------------- Private --------------------
 //-------------------- Helper Functions --------------------
+//Load Menu Items to Array
+//Clears menu items array, reloads data from database
+//Khoi Trinh
+//04/23/22
 void Restaurant::load_menu_items_to_array() {
 	menu_items.clear();
 	ifstream file;
@@ -248,6 +291,10 @@ void Restaurant::load_menu_items_to_array() {
 	}
 }
 
+//Add Menu Item to Array
+//Adds menu item to array by database record
+//Khoi Trinh
+//04/23/22
 void Restaurant::add_menu_item_to_array(string record) {
 	string id_string, item_name, item_description, price_string;
 	int item_id;
@@ -281,6 +328,10 @@ void Restaurant::add_menu_item_to_array(string record) {
 
 }
 
+//Get Next Menu ID
+//Reads database for last menu id and returns next value
+//Khoi Trinh
+//04/23/22
 int Restaurant::get_next_menu_id() {
 	string record;
 	string temp_id;
