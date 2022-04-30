@@ -51,7 +51,7 @@
     <ClCompile Include="Search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShowPendingOrder.cpp">
+    <ClCompile Include="ShowPendingOrders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SignIn_Up.cpp">
@@ -116,7 +116,7 @@
     <ClInclude Include="Search.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShowPendingOrder.h">
+    <ClInclude Include="ShowPendingOrders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SignIn_Up.h">

@@ -136,6 +136,7 @@ void UserInterface::display_restaurant_home_screen() {
 			update_order_status();
 			break;
 		case 3:		//Show Pending Orders
+			show_pending_orders();
 			break;
 		case 4:		//Update Menu
 			display_update_menu_screen();
@@ -464,7 +465,8 @@ int UserInterface::checkout_order(CreateOrder& create_order) {
 	for (auto order_item : order) {
 		auto menu_item = create_order.get_item_by_id(order_item.item_id);
 		cout << menu_item.item_name << endl;
-		cout << "\t" << order_item.comments << endl;
+		if(!order_item.comments.empty())
+			cout << "\t" << order_item.comments << endl;
 		cout.precision(2);
 		cout << "\t$" << fixed << menu_item.item_price << "   x" << order_item.quantity << endl;
 	}
@@ -473,7 +475,7 @@ int UserInterface::checkout_order(CreateOrder& create_order) {
 	cout.precision(2);
 	double subtotal = create_order.get_total_price();
 	cout << fixed << setw(20) << left << "Subtotal: " << right << setw(10) << subtotal << endl;
-	cout << setw(20) << left << "Tax: " << right << setw(10) << subtotal * TAX_RATE << endl << endl;
+	cout << setw(20) << left << "Tax: " << right << setw(10) << (subtotal * TAX_RATE) << endl << endl;
 	cout << setw(20) << left << "Total: " << right << setw(10) << subtotal * (1 + TAX_RATE) << endl << endl;
 
 	string user_input;
@@ -523,7 +525,7 @@ int UserInterface::use_saved_payment(CreateOrder& create_order) {
 		menu_options.push_back(payment.first);
 	}
 	menu_options.push_back("Exit");
-
+	display_menu(menu_options, "Choose a Credit Card");
 	int menu_selection = get_user_menu_selection(menu_options.size());
 	if (menu_selection == menu_options.size())
 		return -1;
@@ -645,7 +647,7 @@ void UserInterface::check_order_status_driver() {
 }
 
 void UserInterface::confirm_delivery() {
-	vector<int> order_ids = ConfirmDelivery::get_active_orders(user_record->get_user_id());
+	vector<int> order_ids = Order::get_active_orders_drivers(user_record->get_user_id());
 	vector<string> menu_options;
 	for (int order_id : order_ids) {
 		Order order(order_id);
@@ -711,7 +713,50 @@ void UserInterface::accept_decline_order() {
 }
 
 void UserInterface::update_order_status() {
+	vector<int> order_ids = Order::get_active_orders_restaurants(user_record->get_user_id());
+	vector<string> menu_options;
+	for (int order_id : order_ids) {
+		menu_options.push_back(to_string(order_id));
+	}
+	menu_options.push_back("Exit");
+	display_menu(menu_options, "Choose Order to Update Status");
 
+	int menu_selection = get_user_menu_selection(menu_options.size());
+	if (menu_selection == menu_options.size())
+		return;
+
+	menu_options = { "Under Review", "Confirmed", "Preparing", "Completed","Exit" };
+	display_menu(menu_options, "Order #" + to_string(order_ids[menu_selection - 1]));
+	menu_selection = get_user_menu_selection(menu_options.size());
+	if (menu_selection == menu_options.size())
+		return;
+	
+	int status = 0;
+	switch (menu_selection) {
+	case 1:
+		status = OrderStatus::review;
+		break;
+	case 2:
+		status = OrderStatus::confirmed;
+		break;
+	case 3:
+		status = OrderStatus::prepared;
+		break;
+	case 4:
+		status = OrderStatus::completed;
+		break;
+	case 5:
+		return;
+	default:
+		cout << "Invalid menu selection\n\nTerminating application\n\n";
+		exit(1);
+	}
+
+	UpdateOrderStatus::update_order_status(order_ids[menu_selection - 1], status);
+}
+
+void UserInterface::show_pending_orders() {
+	ShowPendingOrders::show_pending_orders(user_record->get_user_id());
 }
 
 void UserInterface::display_update_menu_screen() {
@@ -792,12 +837,6 @@ void UserInterface::delete_menu_item() {
 
 	UpdateMenu::delete_menu_item(restaurant_record, menu_item_list[user_selection - 1].first);
 }
-
-
-
-
-
-
 
 
 

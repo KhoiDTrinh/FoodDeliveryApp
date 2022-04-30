@@ -3,43 +3,26 @@
 using namespace std;
 
 //Receives all information from 1 order
-void PendingOrderReport::Orders(int OrderID, vector<string>& ItemList, 
-	vector<int>& quantity, vector<string>& comments, string orderStatus) {
-	
-	cout << "-------------------------"<<endl;
-	cout << "Order ID: " << OrderID << endl;
+int PendingOrderReport::generate_pending_orders_report(vector<int> order_ids) {
+	cout << "Pending Orders Report\n";
+	cout << "---------------------\n\n";
+
+	for (int order_id : order_ids)
+		display_order(order_id);
+	return 1;
+}
+
+void PendingOrderReport::display_order(int order_id) {
+	cout << "Order ID: " << order_id << endl;
+	Order order(order_id);
+	vector<Order::OrderItem> items_list =  order.get_order_items_list();
+
 	//for loop prints items
-	for (int i = 0; i < ItemList.size(); i++){
-		cout << ItemList[i] << " ";
+	for (auto item : items_list) {
+		cout << order.get_item_by_id(item.item_id).item_name << endl;
 		//function call to print quantity of items
-		displayQuantity(quantity, i);
+		cout << "\t" << item.comments << endl;
 		//function call to print comments of items
-		displayComments(comments, i);
-		cout << endl;
+		cout << "\tx" << item.quantity << endl << endl;
 	}
-	
-	cout << "Order Status: " << orderStatus << endl;;
-	cout << "-------------------------";
-}
-//function with for loop to print quantity of items
-void PendingOrderReport::displayQuantity(vector<int>& quantity, int index) {
-	for (int i = index; i < quantity.size(); i++) {
-		cout << "qty(" << quantity[i] << ")" << endl;
-		break;//stops for loop to only print quantity for index
-	}
-
-}
-//function with for loop to print comments, if any, of items
-void PendingOrderReport::displayComments(vector<string>& comments, int index) {
-		for (int i = index; i < comments.size(); i++) {
-			if (comments[i] == " ") {
-				cout << "Comments: None"<<endl;
-				break;
-			}
-			else {
-				cout << "Comments: " << comments[i] << endl;
-				break;
-			}
-	}
-
 }

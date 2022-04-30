@@ -212,6 +212,51 @@ string Order::get_restaurant_address() {
 }
 
 
+vector<int> Order::get_active_orders_restaurants(int restaurant_id) {
+	vector<int> order_ids;
+
+	string record;
+	string o_id, r_id;
+	ifstream file;
+	file.open(orders_file_name);
+	getline(file, record);
+	while (getline(file, record)) {
+		stringstream line(record);
+		getline(line, o_id, ',');
+		getline(line, r_id, ',');
+		getline(line, r_id, ',');
+		getline(line, r_id, ',');
+		if (stoi(r_id) == restaurant_id) {
+			order_ids.push_back(stoi(o_id));
+		}
+	}
+	file.close();
+
+	return order_ids;
+}
+
+vector<int> Order::get_active_orders_drivers(int driver_id) {
+	vector<int> order_ids;
+
+	string record;
+	string o_id, d_id;
+	ifstream file;
+	file.open(orders_file_name);
+	getline(file, record);
+	while (getline(file, record)) {
+		stringstream line(record);
+		getline(line, o_id, ',');
+		getline(line, d_id, ',');
+		getline(line, d_id, ',');
+		if (stoi(d_id) == driver_id) {
+			order_ids.push_back(stoi(o_id));
+		}
+	}
+	file.close();
+
+	return order_ids;
+}
+
 //-------------------- Private Helper Functions --------------------
 int Order::get_next_order_id() {
 	string record, id;

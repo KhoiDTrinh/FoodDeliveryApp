@@ -3,6 +3,7 @@
 #include<fstream>
 #include <vector>
 #include <string>
+#include "Order.h"
 
 using namespace std;
 
@@ -10,9 +11,6 @@ class PendingOrderReport {
 private:
 
 public:
-	static void Orders(int OrderID, vector<string>& ItemList, 
-		vector<int>& quantity, vector<string>& comments, string orderSattus);
-	static void displayQuantity(vector<int>& quantity, int index);
-	static void displayComments(vector<string>& comments, int index);
-
+	static int generate_pending_orders_report(vector<int> order_ids);
+	static void display_order(int order_id);
 };

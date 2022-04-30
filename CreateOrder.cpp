@@ -36,6 +36,7 @@ vector<pair<string,string>> CreateOrder::get_saved_payments(int user_id) {
 	string value;
 	vector<pair<string, string>> saved_cc;
 
+
 	ifstream file;
 	file.open(UserInformation::cc_info_file_name);
 	getline(file, record);
@@ -43,6 +44,7 @@ vector<pair<string,string>> CreateOrder::get_saved_payments(int user_id) {
 		stringstream line(record);
 		getline(line, value, ',');
 		if (stoi(value) == user_id) {
+			getline(line, value, ',');
 			string last_four_cc = "************";
 			last_four_cc += value.substr(value.length() - 4, 4);
 			saved_cc.push_back(pair<string, string>(last_four_cc, record));

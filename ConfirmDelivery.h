@@ -12,5 +12,4 @@ private:
 
 public:
 	static int confirm_delivery(int order_id);
-	static vector<int> get_active_orders(int driver_id);
 };

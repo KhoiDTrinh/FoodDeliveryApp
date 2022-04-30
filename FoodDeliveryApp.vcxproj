@@ -151,7 +151,7 @@
     <ClInclude Include="OrderStatus.h" />
     <ClInclude Include="PendingOrderReport.h" />
     <ClInclude Include="Search.h" />
-    <ClInclude Include="ShowPendingOrder.h" />
+    <ClInclude Include="ShowPendingOrders.h" />
     <ClInclude Include="SignIn_Up.h" />
     <ClInclude Include="SubmitPayment.h" />
     <ClInclude Include="UpdateInfo.h" />
@@ -173,7 +173,7 @@
     <ClCompile Include="OrderStatus.cpp" />
     <ClCompile Include="PendingOrderReport.cpp" />
     <ClCompile Include="Search.cpp" />
-    <ClCompile Include="ShowPendingOrder.cpp" />
+    <ClCompile Include="ShowPendingOrders.cpp" />
     <ClCompile Include="SignIn_Up.cpp" />
     <ClCompile Include="SubmitPayment.cpp" />
     <ClCompile Include="UpdateInfo.cpp" />

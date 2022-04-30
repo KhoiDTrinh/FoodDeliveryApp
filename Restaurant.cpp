@@ -30,8 +30,10 @@ Restaurant::Restaurant(string record) {
 vector<pair<int,string>> Restaurant::get_list_menu_item_names()
 {
 	vector<pair<int,string>> m_list;
-	for (auto item : menu_items)
-		m_list.push_back(pair<int,string>(item.menu_item_id, item.item_name));
+	for (auto item : menu_items) {
+		m_list.push_back(pair<int, string>(item.menu_item_id, item.item_name));
+	}
+
 	return m_list;
 }
 
@@ -222,6 +224,7 @@ Restaurant::MenuItem Restaurant::get_item_by_id(int item_id){
 //-------------------- Private --------------------
 //-------------------- Helper Functions --------------------
 void Restaurant::load_menu_items_to_array() {
+	menu_items.clear();
 	ifstream file;
 	file.open(menu_file_name);
 	
@@ -275,6 +278,7 @@ void Restaurant::add_menu_item_to_array(string record) {
 	}
 
 	menu_items.push_back(MenuItem(item_id,item_name,item_description,item_price));
+
 }
 
 int Restaurant::get_next_menu_id() {

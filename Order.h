@@ -38,7 +38,8 @@ public:
 	int find_driver();
 	
 
-	static vector<int> get_active_orders_drivers();
+	static vector<int> get_active_orders_restaurants(int restaurant_id);
+	static vector<int> get_active_orders_drivers(int driver_id);
 
 	//-------------------- Getter/Setter --------------------
 	int get_order_id() { return order_id; }

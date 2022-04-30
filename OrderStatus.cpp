@@ -39,6 +39,7 @@ int OrderStatus::display_order_status(vector<pair<int, int>> order_statuses) {
 		default:
 			cout << "Invalid argument in OrderStatus::display_order_status()\n\n";
 		}
+		cout << endl;
 
 	}
 
