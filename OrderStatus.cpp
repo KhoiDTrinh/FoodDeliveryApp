@@ -1,18 +1,23 @@
 #include "OrderStatus.h"
-/*Boundary class: Order Status 
-* receives a vector pair of order_id and status
+/*Artifact Name: Order Status 
+* receives a vector pair of order_id and status from Check Order Status Class
 * and a switch case is used to print out order status
 * Mitzi Lezama
-* Khoi Trinh 
 * 4/14/2022
 */
 using namespace std;
 
-//function receives vector of pair<int,int> of order_id, status
+
+/*Artifact name: display_order_status
+* function receives vector of pair<int,int> of order_id, status
+* Mitzi Lezama
+* 4/14/2022
+*/
+
 int OrderStatus::display_order_status(vector<pair<int, int>> order_statuses) {
 	cout << "Displaying order status\n";
 	cout << "-----------------------\n\n";
-
+	//for loop iterates through vector of order_id and status
 	for (auto order : order_statuses) {
 		int status = order.second;					//second stores the status of the order
 		cout << "Order #" << order.first << endl;	//first stores the order id
