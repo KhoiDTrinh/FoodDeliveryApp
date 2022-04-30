@@ -1,5 +1,5 @@
 restaurant_id,name,address,category
-3,McDonalds,1234 MyAddress,Burgers
-5,Chipotle,12321 asdfasd,Mexican
-6,Burger King,993488 The King,Burgers
-7,Chickfila,1234 Chicken,Burgers
+3,McDonalds,1234 MyAddress,Burgers fastfood
+5,Chipotle,12321 asdfasd,Mexican fastfood
+6,Burger King,993488 The King,Burgers fastfood
+7,Chickfila,1234 Chicken,Burgers Chicken fastfood

@@ -15,4 +15,5 @@ public:
 	static int send_delivered_alert_customer(int order_id, int customer_id);
 	static int send_order_notification_restaurant(int order_id, int restaurant_id);
 	static int send_restaurant_decline_customer(int order_id, int customer_id);
+	static int delete_notification(int order_id, int user_id, string message);
 };

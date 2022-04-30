@@ -31,3 +31,32 @@ int Notification::send_notification(int order_id, int user_id, string message) {
 	file.close();
 	return 1;
 }
+
+
+int Notification::delete_notification(int order_id, int user_id, string message) {
+	vector<string> database;
+	string record;
+	string u_id, o_id, msg;
+
+	ifstream infile;
+	infile.open(notifications_file_name);
+	getline(infile, record);
+	database.push_back(record);
+	while (getline(infile, record)) {
+		stringstream line(record);
+		getline(line, u_id, ',');
+		getline(line, o_id, ',');
+		getline(line, msg, ',');
+
+		if (stoi(u_id) != user_id || stoi(o_id) != order_id || msg.compare(message) != 0)
+			database.push_back(record);
+	}
+	infile.close();
+
+	ofstream outfile;
+	outfile.open(notifications_file_name);
+	for (string str : database)
+		outfile << str << endl;
+	outfile.close();
+	return 1;
+}

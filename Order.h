@@ -46,6 +46,7 @@ public:
 	int get_user_id() { return user_id; }
 	int get_driver_id() { return driver_id; }
 	int get_restaurant_id() { return restaurant_id; }
+	int get_order_status() { return order_status; }
 	string get_delivery_address() { return delivery_address; }
 	void set_user_id(int id) { user_id = id; }
 	void set_driver_id(int id) { driver_id = id; }
@@ -72,4 +73,5 @@ private:
 	//-------------------- Private Helper Functions --------------------
 	int get_next_order_id();
 	void load_restaurant_record();
+	void load_order_items_list();
 };

@@ -1,4 +1,4 @@
 order_id,user_id,driver_id,restaurant_id,address,order_status
-2,1,0,3,1234 Main St,0
-3,1,0,3,1234 Main St,0
-4,1,0,3,1234 Main St,0
+2,1,2,3,1234 Main St,4
+3,1,2,3,1234 Main St,4
+4,1,0,3,1234 Main St,4

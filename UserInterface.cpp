@@ -287,7 +287,6 @@ void UserInterface::update_personal_info() {
 	if (!UpdateInfo::validate_login(user_input[0], user_input[1], user_record)) {
 		cout << "Password was invalid\nPress ENTER to return to Main Menu\n";
 		getline(cin, input);
-		display_home_screen();
 		return;
 	}
 
@@ -300,7 +299,6 @@ void UserInterface::update_personal_info() {
 	case 1:		//successful update
 		cout << "User Information successfully updated\nPress ENTER to return to Main Menu\n";
 		getline(cin, input);
-		display_home_screen();
 		break;
 	case -1:	//user not found in database
 		cout << "User was not found in database\n";
@@ -462,6 +460,13 @@ int UserInterface::checkout_order(CreateOrder& create_order) {
 	clear_screen();
 	cout << "Reviewing Order...\n\n";
 	auto order = create_order.get_order_items_list();
+
+	if (order.size() == 0) {
+		cout << "No items in order\n\nReturning to Order Menu\n\n";
+		pause();
+		return -1;
+	}
+
 	for (auto order_item : order) {
 		auto menu_item = create_order.get_item_by_id(order_item.item_id);
 		cout << menu_item.item_name << endl;
@@ -633,10 +638,10 @@ void UserInterface::accept_reject_delivery() {
 	} while (!valid);
 
 	if (user_input.compare("a") == 0) {
-		AcceptRejectDelivery::accept_delivery(order.get_driver_id(), order.get_order_id());
+		AcceptRejectDelivery::accept_delivery(order.get_order_id(), user_record->get_user_id());
 	}
 	else {
-		AcceptRejectDelivery::reject_delivery(order.get_order_id());
+		AcceptRejectDelivery::reject_delivery(order.get_order_id(), user_record->get_user_id());
 	}
 }
 
@@ -649,10 +654,18 @@ void UserInterface::check_order_status_driver() {
 void UserInterface::confirm_delivery() {
 	vector<int> order_ids = Order::get_active_orders_drivers(user_record->get_user_id());
 	vector<string> menu_options;
-	for (int order_id : order_ids) {
-		Order order(order_id);
-		menu_options.push_back("Order #" + to_string(order_id) + ". Address: " + order.get_delivery_address());
+
+	for (auto itr = order_ids.begin(); itr != order_ids.end();) {
+		Order order((*itr));
+		if (order.get_order_status() < OrderStatus::delivered) {
+			menu_options.push_back("Order #" + to_string((*itr)) + ". Address: " + order.get_delivery_address());
+			++itr;
+		}
+		else{
+			itr = order_ids.erase(itr);
+		}
 	}
+
 	menu_options.push_back("Exit");
 	display_menu(menu_options, "Choose Delivery to Confirm");
 
@@ -705,10 +718,10 @@ void UserInterface::accept_decline_order() {
 	} while (!valid);
 
 	if (user_input.compare("a") == 0) {
-		AcceptDeclineOrder::accept_order(order.get_order_id());
+		AcceptDeclineOrder::accept_order(order.get_order_id(), user_record->get_user_id());
 	}
 	else {
-		AcceptDeclineOrder::decline_order(order.get_order_id());
+		AcceptDeclineOrder::decline_order(order.get_order_id(), user_record->get_user_id());
 	}
 }
 
@@ -756,7 +769,9 @@ void UserInterface::update_order_status() {
 }
 
 void UserInterface::show_pending_orders() {
+	clear_screen();
 	ShowPendingOrders::show_pending_orders(user_record->get_user_id());
+	pause();
 }
 
 void UserInterface::display_update_menu_screen() {
@@ -807,7 +822,6 @@ void UserInterface::update_menu_item() {
 	int user_selection = get_user_menu_selection(menu_options.size());
 
 	if (user_selection == menu_options.size()) {
-		display_update_menu_screen();
 		return;
 	}
 
@@ -831,7 +845,6 @@ void UserInterface::delete_menu_item() {
 	int user_selection = get_user_menu_selection(menu_options.size());
 
 	if (user_selection == menu_options.size()) {
-		display_update_menu_screen();
 		return;
 	}
 

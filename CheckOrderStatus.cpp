@@ -57,6 +57,5 @@ int CheckOrderStatus::check_order_status_driver(int driver_id) {
 	}
 	file.close();
 
-
 	return OrderStatus::display_order_status(order_statuses);
 }

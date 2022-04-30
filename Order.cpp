@@ -45,7 +45,7 @@ Order::Order(int id) {
 		stringstream line(record);
 		getline(line, value, ',');
 		if (id == stoi(value)) {
-			user_id = id;
+			order_id = id;
 			getline(line, value, ',');
 			user_id = stoi(value);
 			getline(line, value, ',');
@@ -60,7 +60,6 @@ Order::Order(int id) {
 		}
 	}
 	file.close();
-
 	load_restaurant_record();
 }
 
@@ -97,6 +96,7 @@ int Order::remove_item_from_order(Order::OrderItem item) {
 }
 
 vector<Order::OrderItem> Order::get_order_items_list() {
+	load_order_items_list();
 	return order_items;
 }
 
@@ -211,7 +211,6 @@ string Order::get_restaurant_address() {
 	return restaurant->get_restaurant_address();
 }
 
-
 vector<int> Order::get_active_orders_restaurants(int restaurant_id) {
 	vector<int> order_ids;
 
@@ -282,5 +281,27 @@ void Order::load_restaurant_record() {
 			cout << "Fatal error in Order::load_restaurant_record\n\nTerminating application\n\n";
 			exit(1);
 		}
+	}
+}
+
+void Order::load_order_items_list() {
+	if (order_items.size() == 0) {
+		string record;
+		string o_id, i_id, qty, comm;
+
+		ifstream file;
+		file.open(order_items_file_name);
+		getline(file, record);
+		while (getline(file, record)) {
+			stringstream line(record);
+			getline(line, o_id, ',');
+			getline(line, i_id, ',');
+			getline(line, qty, ',');
+			getline(line, comm, ',');
+
+			if(stoi(o_id) == order_id)
+				order_items.push_back(OrderItem(stoi(i_id), stoi(qty), comm));
+		}
+		file.close();
 	}
 }
