@@ -1,5 +1,5 @@
 #include "PendingOrderReport.h"
-/*Boundary class: Pending Order Report
+/*Artifact Name: Pending Order Report
 * Receives a vector of Order IDs which will be iterarated through to display 
 * each individual order
 * Mitzi Lezama
@@ -8,7 +8,11 @@
 */
 using namespace std;
 
-//Receives a vector of all order IDS
+/*Artifact Name: generate_orders_report
+* Receives a vector of all order_ids
+* Mitzi Lezama
+* 4/14/2022
+*/
 int PendingOrderReport::generate_pending_orders_report(vector<int> order_ids) {
 	cout << "Pending Orders Report\n";
 	cout << "---------------------\n\n";
@@ -18,8 +22,12 @@ int PendingOrderReport::generate_pending_orders_report(vector<int> order_ids) {
 		display_order(order_id);
 	return 1;
 }
-
-//received an individual order ID
+/*Artifact Name: generate_orders_report
+* received an individual order ID
+* Mitzi Lezama
+* Khoi Trinh
+* 4/14/2022
+*/
 void PendingOrderReport::display_order(int order_id) {
 	cout << "Order ID: " << order_id << endl;
 	Order order(order_id);
