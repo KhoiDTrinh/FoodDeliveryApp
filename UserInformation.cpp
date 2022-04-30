@@ -170,8 +170,8 @@ int UserInformation::update_user_record(vector<string>& user_info) {
 		return 0;
 	}
 
-	first_name = user_info[2];
-	last_name = user_info[3];
+	first_name = user_info[3];
+	last_name = user_info[4];
 
 	//Rewrite entire database back to the file
 	try {

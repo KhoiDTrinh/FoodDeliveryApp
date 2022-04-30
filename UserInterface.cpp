@@ -922,16 +922,14 @@ void UserInterface::update_order_status() {
 	display_menu(menu_options, "Choose Order to Update Status");
 
 	//Get user selection on which order to change
-	int menu_selection = get_user_menu_selection(menu_options.size());
-	if (menu_selection == menu_options.size())
+	int index_order = get_user_menu_selection(menu_options.size());
+	if (index_order == menu_options.size())
 		return;
 
 	//Display new status options and gets user input
 	menu_options = { "Under Review", "Confirmed", "Preparing", "Completed","Exit" };
-	display_menu(menu_options, "Order #" + to_string(order_ids[menu_selection - 1]));
-	menu_selection = get_user_menu_selection(menu_options.size());
-	if (menu_selection == menu_options.size())
-		return;
+	display_menu(menu_options, "Order #" + to_string(order_ids[index_order - 1]));
+	int menu_selection = get_user_menu_selection(menu_options.size());
 	
 	//Gets status code based on user selection
 	int status = 0;
@@ -956,7 +954,7 @@ void UserInterface::update_order_status() {
 	}
 
 	//Updates order status based on status
-	UpdateOrderStatus::update_order_status(order_ids[menu_selection - 1], status);
+	UpdateOrderStatus::update_order_status(order_ids[index_order - 1], status);
 }
 
 //Show Pending Orders
