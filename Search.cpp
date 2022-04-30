@@ -12,6 +12,15 @@ Description:
 
 using namespace std;
 
+
+/*
+Date: April 24, 2022
+Name: William Cao(Phuoc), Khoi Trinh
+Artifact name: Search Function
+
+Description:
+	Search user input by opening restaurant file name then read in the line and push it to vector. Return the search result.
+*/
 vector<pair<int, string>> Search::search(string user_input) {
 	vector<pair<int, string>> search_results;
 
@@ -32,13 +41,30 @@ vector<pair<int, string>> Search::search(string user_input) {
 	return search_results;
 }
 
-//check for search term with the database. 
+
+/*
+Date: April 24, 2022
+Name: William Cao(Phuoc), Khoi Trinh 
+Artifact name: Check Match Function
+
+Description:
+	Check for search term with the database. using tolowercase function.
+*/
 bool Search::check_match(string record, string search_term) {
 	tolowercase(record);			//Lowercase record
 	tolowercase(search_term);		//Lowercase seqarch term from user input
 	return !(record.find(search_term) == string::npos);
 }
 
+
+/*
+Date: April 24, 2022
+Name: William Cao(Phuoc), Khoi Trinh
+Artifact name: tolowercase
+
+Description:
+	Turn input into Lowercase
+*/
 void Search::tolowercase(string& input) {
 	transform(input.begin(), input.end(), input.begin(), [](unsigned char c) {return tolower(c); });
 }

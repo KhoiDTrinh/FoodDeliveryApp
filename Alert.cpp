@@ -13,8 +13,14 @@ Description:
 
 using namespace std;
 
+/*
+Date: April 19, 2022
+Name: William Cao(Phuoc), Khoi Trinh
+Artifact Name: Find Driver Function
 
-//Find driver by read the database and account type 1, then push it into a vector of user ID
+Description:
+	Find driver by read the database and account type 1, then push it into a vector of user ID
+*/
 int Alert::find_driver(int order_id) {
 	vector<string> driver_list;
 
@@ -45,16 +51,41 @@ int Alert::find_driver(int order_id) {
 }
 
 
+/*
+Date: April 19, 2022
+Name: William Cao(Phuoc)
+Artifact Name: Customer Delivery Function
+
+Description:
+	Send over Order ID, Customer ID to Notification class
+*/
 int Alert::customer_delivery(int order_id, int customer_id) {
+	
 	return Notification::send_delivered_alert_customer(order_id, customer_id);
 }
 
+/*
+Date: April 19, 2022
+Name: William Cao(Phuoc)
+Artifact Name: Restaurant Decline Function
 
+Description:
+	Send over Order ID, Customer ID to Notification class
+*/
 int Alert::restaurant_decline(int order_id, int customer_id) {
+	
 	return Notification::send_order_notification_restaurant(order_id, customer_id);
 }
 
+/*
+Date: April 19, 2022
+Name: William Cao(Phuoc)
+Artifact Name: Restaurant New Order Function
 
+Description:
+	Send over Order ID, Restaurant ID to Notification class
+*/
 int Alert::restaurant_new_order(int order_id, int restaurant_id) {
+	
 	return Notification::send_order_notification_restaurant(order_id, restaurant_id);
 }
