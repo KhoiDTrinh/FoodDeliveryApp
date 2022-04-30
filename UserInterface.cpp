@@ -4,14 +4,20 @@ using namespace std;
 
 //-------------------- Public Functions --------------------
 
+//Default Constructor
 UserInterface::UserInterface() {
-	user_record = nullptr;
 }
 
+//Destructor
 UserInterface::~UserInterface() {
 	delete user_record;
+	delete restaurant_record;
 }
 
+//Main driver
+//Driver to start the user interface, public function accessible to other classes
+//Khoi Trinh
+//04/03/2022
 void UserInterface::run() {
 	display_start_up_screen();
 }
@@ -19,12 +25,18 @@ void UserInterface::run() {
 
 //-------------------- Main Menus --------------------
 
+//Display Start Up Screen
+//Displays the initial screen when the app is loaded
+//Khoi Trinh
+//04/03/22
 void UserInterface::display_start_up_screen() {
+	//Create array of options, displays them, and get's user menu selection.
 	vector<string> menu_options = { "Sign In","Create an Account","Exit" };
 	display_menu(menu_options, "Menu");
-	int user_input = get_user_menu_selection(menu_options.size());
+	int menu_selection = get_user_menu_selection(menu_options.size());
 
-	switch (user_input) {
+	//Switch statement to run based on user selection
+	switch (menu_selection) {
 	case 1:		//Sign in
 		sign_in();
 		break;
@@ -40,7 +52,12 @@ void UserInterface::display_start_up_screen() {
 	}
 }
 
+//Display Home Screen
+//Displays the home screen, the first screen shown after login or successful signup
+//Khoi Trinh
+//04/03/22
 void UserInterface::display_home_screen() {
+	//Displays a different screen based on account type (customer, driver, or restaurant)
 	switch (user_record->get_account_type()) {
 	case UserInformation::account_type::customer:
 		display_customer_home_screen();
@@ -57,8 +74,15 @@ void UserInterface::display_home_screen() {
 	}
 }
 
+//Display Customer Home Screen
+//Shows the main menu options for the customer
+//Khoi Trinh
+//04/03/22
 void UserInterface::display_customer_home_screen() {
+	//Sets the main menu options
 	vector<string> menu_options = { "Create a New Order", "Check Order Status", "Update Personal Information", "Exit" };
+	
+	//Main loop for program, runs until Exit is chosen
 	while (true)
 	{
 		display_menu(menu_options, "Main Menu");
@@ -67,6 +91,7 @@ void UserInterface::display_customer_home_screen() {
 
 		int user_input = get_user_menu_selection(menu_options.size());
 
+		//Switch statement to redirect based on user input
 		switch (user_input) {
 		case 1:		//Create an Order
 			create_new_order();
@@ -87,8 +112,15 @@ void UserInterface::display_customer_home_screen() {
 	}
 }
 
+//Display Driver Home Screen
+//Shows the main menu options for the driver
+//Khoi Trinh
+//04/03/22
 void UserInterface::display_driver_home_screen() {
+	//Sets the main menu options
 	vector<string> menu_options = { "Accept/Reject Delivery", "Check Order Status", "Confirm Delivery", "Update Personal Information", "Exit" };
+	
+	//Main loop for program, runs until Exit is chosen
 	while (true) {
 		display_menu(menu_options, "Main Menu");
 
@@ -96,6 +128,7 @@ void UserInterface::display_driver_home_screen() {
 
 		int user_input = get_user_menu_selection(menu_options.size());
 
+		//Switch statement to redirect based on user input
 		switch (user_input) {
 		case 1:		//Accept/Reject Delivery
 			accept_reject_delivery();
@@ -119,8 +152,15 @@ void UserInterface::display_driver_home_screen() {
 	}
 }
 
+//Display Restaurant Home Screen
+//Shows the main menu options for the restaurant
+//Khoi Trinh
+//04/03/22
 void UserInterface::display_restaurant_home_screen() {
+	//Sets the main menu options
 	vector<string> menu_options = { "Accept/Decline Order", "Update Order Status", "Show Pending Orders", "Update Menu", "Update Personal Information", "Exit"};
+
+	//Main loop for program, runs until Exit is chosen
 	while (true) {
 		display_menu(menu_options, "Main Menu");
 
@@ -159,6 +199,10 @@ void UserInterface::display_restaurant_home_screen() {
 
 //-------------------- All Users Functions --------------------
 
+//Sign In
+//Gets user credentials for sign in, validates username and password, 
+//Khoi Trinh
+//04/11/22
 void UserInterface::sign_in() {
 	clear_screen();
 	string username;
@@ -197,14 +241,21 @@ void UserInterface::sign_in() {
 	}
 }
 
+//Sign Up
+//Creation of a new user account
+//Khoi Trinh
+//04/11/22
 void UserInterface::sign_up() {
 	clear_screen();
 
+	//Select account type
 	vector<string> menu_options = { "Customer", "Driver", "Restaurant", "Exit"};
 	display_menu(menu_options, "Which account type do you wish to create?");
 	cout << "Which account type do you wish to create?\n";
 	int user_menu_selection = get_user_menu_selection(menu_options.size());
 
+
+	//Exit on selection of option 4
 	if (user_menu_selection == 4) {
 		cout << "Closing the application.\n\n";
 		exit(0);
@@ -212,10 +263,12 @@ void UserInterface::sign_up() {
 
 	clear_screen();
 
+
+
 	string input;
 	vector<string> user_input;
 
-
+	//Get username and password
 	cout << "Sign Up\n--------------------\n";
 	cout << "Username: ";
 	getline(cin, input);
@@ -225,6 +278,7 @@ void UserInterface::sign_up() {
 	getline(cin, input);
 	user_input.push_back(input);
 
+	//Get user input for account type selection
 	switch (user_menu_selection) {
 	case 1:
 		user_input.push_back(to_string(UserInformation::account_type::customer));
@@ -240,16 +294,20 @@ void UserInterface::sign_up() {
 		exit(1);
 	}
 
+	//Gets remaining user info
 	get_user_info(user_input);
 
+	//Calls external class to process the sign up, save the result message
 	int result = SignIn_Up::sign_up(user_input, user_record);
 	
+	//If user type is restaurant, get restaurant specific info
 	if (user_menu_selection == 3) {
 		user_input.clear();
 		get_restaurant_info(user_input);
 		Restaurant::add_new_restaurant(user_input, restaurant_record);
 	}
 
+	//Redirect based on result of account signup attempt
 	switch (result) {
 	case 1:		//successful account creation
 		display_home_screen();
@@ -271,30 +329,40 @@ void UserInterface::sign_up() {
 	}
 }
 
+
+//Update Personal Info
+//Allows user to update their stored personal info
+//Khoi Trinh
+//04/11/22
 void UserInterface::update_personal_info() {
 	string input;
 	clear_screen();
-	vector<string> user_input;
+	vector<string> user_input;		//Array to pass information to UpdateInfo class to process
 
 	cout << "Update Personal Info\n--------------------\n";
+	user_input.push_back(user_record->get_username());		//Username pulled from records, cannot be changed
 	
-	user_input.push_back(user_record->get_username());
-	
+	//Get user password
 	cout << "Verify Your Password: ";
 	getline(cin, input);
 	user_input.push_back(input);
 
+	//Verifies password
 	if (!UpdateInfo::validate_login(user_input[0], user_input[1], user_record)) {
 		cout << "Password was invalid\nPress ENTER to return to Main Menu\n";
 		getline(cin, input);
 		return;
 	}
 
-	user_input.push_back(to_string(user_record->get_account_type()));
+	user_input.push_back(to_string(user_record->get_account_type()));		//Store password in results array
+	
+	//Get remaining user information
 	get_user_info(user_input);
 
+	//Calls UpdateInfo class to process updated user information
 	int result = UpdateInfo::update_user_info(user_input, user_record);
 
+	//Displays result based on message from UpdateInfo
 	switch (result) {
 	case 1:		//successful update
 		cout << "User Information successfully updated\nPress ENTER to return to Main Menu\n";
@@ -313,21 +381,34 @@ void UserInterface::update_personal_info() {
 
 
 //-------------------- Customer Functions --------------------
+
+//Check Order Status
+//Allows customer to check the status of their order
+//Khoi Trinh
+//04/23/22
 void UserInterface::check_order_status_customer() {
 	clear_screen();
+	//Calls CheckOrderStatus to check for orders based on user_id
 	CheckOrderStatus::check_order_status_customer(user_record->get_user_id());
 	pause();
 }
 
-//-------------------- Create Order  --------------------
+//-------------------- Create Order and Related Helper Functions --------------------
+//Create New Order
+//Initialization of a new order
+//Khoi Trinh
+//04/23/22
 void UserInterface::create_new_order() {
+	//Calls search function to find a restaurant to select for the order
 	int restaurant_id = search_for_restaurant();
 	if (restaurant_id == -1)
 		return;
 
+	//Declare and initialize a CreateOrder object to handle processing for this process
 	CreateOrder create_order;
 	create_order.start_new_order(user_record->get_user_id(), restaurant_id, user_record->get_address());
 
+	//Main loop for creating an order, repeat until order is submitted or user exits
 	int result;
 	while (true) {
 		result = add_remove_items_to_order(create_order);
@@ -336,23 +417,32 @@ void UserInterface::create_new_order() {
 	}
 }
 
+//Search for Restaurant
+//Allows customer to search for and select a restaurant for their order
+//Khoi Trinh
+//04/23/22
 int UserInterface::search_for_restaurant() {
 	clear_screen();
 	cout << "Searching for Restaurant\n\n";
+
 	cout << "Please enter a search term: ";
 	string search_term;
 	getline(cin, search_term);
 
+	//Creates Search object to process search results
 	Search search;
+	//Pair is <int restaurant_id, restaurant_name>
 	vector<pair<int, string>> search_results = search.search(search_term);
 
+	//Display a menu using the search results
 	vector<string> menu_options;
 	for (auto entry : search_results) {
 		menu_options.push_back(entry.second);
 	}
 	menu_options.push_back("Exit");
-
 	display_menu(menu_options, "Select a Restaurant to Begin Order");
+
+	//Get restaurant selection
 	int restaurant_selection = get_user_menu_selection(menu_options.size());
 
 	if (restaurant_selection == menu_options.size())
@@ -360,9 +450,14 @@ int UserInterface::search_for_restaurant() {
 
 	restaurant_selection = search_results[restaurant_selection - 1].first;
 
+	//Return restaurant_id
 	return restaurant_selection;
 }
 
+//Add or Remove Items to Order
+//Displays menu for user to choose to add, remove, or checkout order
+//Khoi Trinh
+//04/23/22
 int UserInterface::add_remove_items_to_order(CreateOrder& create_order) {
 	vector<string> menu_options = {"Add Item to Order", "Remove Item from Order", "Checkout", "Exit"};
 	display_menu(menu_options, "Cart");
@@ -391,9 +486,15 @@ int UserInterface::add_remove_items_to_order(CreateOrder& create_order) {
 	}
 }
 
+//Add Item to Order
+//Allows customer to choose items to add to their order
+//Khoi Trinh
+//04/23/22
 int  UserInterface::add_item_to_order(CreateOrder& create_order) {
+	//Get all items from the restaurants menu
 	vector<pair<int,string>> menu  = create_order.get_menu_options();
-	
+
+	//Gets the items in the menu and adds it to a vector to display
 	vector<string> menu_options;
 	for (auto item : menu)
 		menu_options.push_back(item.second);
@@ -404,6 +505,7 @@ int  UserInterface::add_item_to_order(CreateOrder& create_order) {
 	if (menu_selection == menu_options.size())
 		return -1;
 
+	//Display more details of item that user selected
 	clear_screen();
 	auto item = create_order.get_item_by_id(menu[menu_selection - 1].first);
 	cout << item.item_name << endl;
@@ -415,7 +517,10 @@ int  UserInterface::add_item_to_order(CreateOrder& create_order) {
 	string user_input;
 	string comment;
 
+	//Get item quantity and comments
 	cout << "How many would you like to order? ";
+
+	//Input validation
 	do {
 		getline(cin, user_input);
 		try {
@@ -429,6 +534,7 @@ int  UserInterface::add_item_to_order(CreateOrder& create_order) {
 		}
 	} while (quantity < 0 || quantity > 99);
 
+	//If quantity 0, do not continue, return to previous screen
 	if (quantity == 0)
 		return 0;
 
@@ -438,8 +544,15 @@ int  UserInterface::add_item_to_order(CreateOrder& create_order) {
 	return create_order.add_item_to_order(item.menu_item_id, quantity, comment);
 }
 
+//Remove Item from Order
+//Allows customer to delete a previously added item from their order
+//Khoi Trinh
+//04/23/22
 int UserInterface::remove_item_from_order(CreateOrder& create_order) {
+	//Gets array of items currently in the order
 	auto order = create_order.get_order_items_list();
+
+	//Displays menu screen with current items in order
 	vector<string> menu_options;
 	for (auto item : order) {
 		string line = to_string(item.quantity) + "x ";
@@ -449,24 +562,33 @@ int UserInterface::remove_item_from_order(CreateOrder& create_order) {
 	menu_options.push_back("Exit");
 	display_menu(menu_options, "Remove Item from Order");
 	
+	//Get user selection, return if user chooses exit
 	int menu_selection = get_user_menu_selection(menu_options.size());
 	if (menu_selection == menu_options.size())
 		return -1;
 
+	//Removes item from the order and returns result of that function call from the CreateOrder class
 	return create_order.remove_item_from_order(order[menu_selection - 1]);
 }
 
+//Checkout Order
+//Allows customer to review order and choose payment options for it
+//Khoi Trinh
+//04/23/22
 int UserInterface::checkout_order(CreateOrder& create_order) {
 	clear_screen();
 	cout << "Reviewing Order...\n\n";
+	//Gets list of all items in order
 	auto order = create_order.get_order_items_list();
 
+	//Return to previous menu if no items are in order
 	if (order.size() == 0) {
 		cout << "No items in order\n\nReturning to Order Menu\n\n";
 		pause();
 		return -1;
 	}
 
+	//Format and display information from order
 	for (auto order_item : order) {
 		auto menu_item = create_order.get_item_by_id(order_item.item_id);
 		cout << menu_item.item_name << endl;
@@ -477,12 +599,14 @@ int UserInterface::checkout_order(CreateOrder& create_order) {
 	}
 	cout << "\n----------------------------\n\n";
 
+	//Gets subtotal and displays totals
 	cout.precision(2);
 	double subtotal = create_order.get_total_price();
 	cout << fixed << setw(20) << left << "Subtotal: " << right << setw(10) << subtotal << endl;
 	cout << setw(20) << left << "Tax: " << right << setw(10) << (subtotal * TAX_RATE) << endl << endl;
 	cout << setw(20) << left << "Total: " << right << setw(10) << subtotal * (1 + TAX_RATE) << endl << endl;
 
+	//Ask user to confirm order, with input validation
 	string user_input;
 	bool valid = false;
 	cout << "Confirm Order? (y/n): ";
@@ -498,9 +622,14 @@ int UserInterface::checkout_order(CreateOrder& create_order) {
 		return -1;
 	}
 
+	//Go to payment selection screen
 	return select_payment_option(create_order);
 }
 
+//Select Payment Option
+//Allows customer to choose to use saved payment or enter new payment info
+//Khoi Trinh
+//04/23/22
 int UserInterface::select_payment_option(CreateOrder& create_order) {
 	vector<string> menu_options = { "Use Saved Payment", "Enter new Credit Card Info", "Exit"};
 	display_menu(menu_options, "Cart");
@@ -523,22 +652,36 @@ int UserInterface::select_payment_option(CreateOrder& create_order) {
 	}
 }
 
+//Use Saved Payment
+//Allows customer to choose which saved payment to use, then submits order
+//Khoi Trinh
+//04/23/22
 int UserInterface::use_saved_payment(CreateOrder& create_order) {
+	//Gets list of saved payments
 	auto saved_payments = create_order.get_saved_payments(user_record->get_user_id());
 	vector<string> menu_options;
+	
+	//Displays menu with all saved payments
 	for (auto payment : saved_payments) {
 		menu_options.push_back(payment.first);
 	}
 	menu_options.push_back("Exit");
 	display_menu(menu_options, "Choose a Credit Card");
+
 	int menu_selection = get_user_menu_selection(menu_options.size());
 	if (menu_selection == menu_options.size())
 		return -1;
-
+	
+	//Submit payment with the selected credit card
 	return create_order.submit_payment(saved_payments[menu_selection - 1].second, TAX_RATE, user_record->get_address());
 }
 
+//Enter New Payment
+//Gets new payment information from customer, gives option to save that payment, then submits order
+//Khoi Trinh
+//04/23/22
 int UserInterface::enter_new_payment(CreateOrder& create_order) {
+	//Payment stores the payment record to write to database and send to SubmitPayment class
 	string payment = to_string(user_record->get_user_id()) + ",";
 	
 	clear_screen();
@@ -546,6 +689,7 @@ int UserInterface::enter_new_payment(CreateOrder& create_order) {
 	cout << "-----------------------\n\n";
 	cout << "Credit card number: ";
 
+	//Get credit card number and validate that it is a number using uint_64_t since it is larger than an int
 	bool valid = false;
 	uint64_t cc_value_test;
 	string user_input;
@@ -559,6 +703,7 @@ int UserInterface::enter_new_payment(CreateOrder& create_order) {
 	} while (!valid);
 	payment += user_input + ",";
 
+	//Get expiration date and validate that it is a valid MMYY format
 	cout << "Expiration date (mmyy): ";
 	valid = false;
 	int exp_date;
@@ -572,6 +717,7 @@ int UserInterface::enter_new_payment(CreateOrder& create_order) {
 	} while (!valid);
 	payment += user_input + ",";
 
+	//Get CVV and check that it is 3 digits
 	cout << "CVV: ";
 	valid = false;
 	int cvv_test;
@@ -585,10 +731,12 @@ int UserInterface::enter_new_payment(CreateOrder& create_order) {
 	} while (!valid);
 	payment += user_input + ",";
 
+	//Get name on credit card
 	cout << "Name on credit card: ";
 	getline(cin, user_input);
 	payment += user_input;
 
+	//Ask user to save credit card, and validate user input
 	cout << "Would you like to save this credit card for future use (y/n)? ";
 	valid = false;
 	do {
@@ -599,14 +747,22 @@ int UserInterface::enter_new_payment(CreateOrder& create_order) {
 			cout << "Please enter y or n: ";
 	} while (!valid);
 
-
+	//Submit the payment, save it if user selected 'y'
 	return create_order.submit_payment(payment, TAX_RATE, user_record->get_address(), user_input.compare("y") == 0);
 }
 
 
 //-------------------- Driver Functions --------------------
+
+//Accept or Reject Delivery
+//Gets list of new delivery notifications and gives driver option to accept or reject those deliveries
+//Khoi Trinh
+//04/25/22
 void UserInterface::accept_reject_delivery() {
+	//Get list of notifications from AcceptRejectDelivery class
 	vector<int> order_ids = AcceptRejectDelivery::get_new_delivery_requests(user_record->get_user_id());
+
+	//Format and display those options to the menu
 	vector<string> menu_options;
 	for (int order_id : order_ids) {
 		Order order(order_id);
@@ -619,6 +775,7 @@ void UserInterface::accept_reject_delivery() {
 	if (menu_selection == menu_options.size())
 		return;
 
+	//After selection, displays more information about the order to the driver
 	clear_screen();
 	Order order(order_ids[menu_selection - 1]);
 	cout << "Order #" << order.get_order_id() << endl;
@@ -626,6 +783,7 @@ void UserInterface::accept_reject_delivery() {
 	cout << "Restaurant Address: " << order.get_restaurant_address() << endl;
 	cout << "------------------------------------------------------\n\n";
 
+	//Get driver decision to accept or decline, with input validation
 	string user_input;
 	bool valid = false;
 	cout << "Would you like to accept or decline the delivery (a/d)? ";
@@ -637,6 +795,7 @@ void UserInterface::accept_reject_delivery() {
 			cout << "Please enter either a or d: ";
 	} while (!valid);
 
+	//Run different accept or reject functions based on result of input
 	if (user_input.compare("a") == 0) {
 		AcceptRejectDelivery::accept_delivery(order.get_order_id(), user_record->get_user_id());
 	}
@@ -645,16 +804,26 @@ void UserInterface::accept_reject_delivery() {
 	}
 }
 
+//Check Order Status Driver
+//Gets status of all active orders for the driver and displays them
+//Khoi Trinh
+//04/25/22
 void UserInterface::check_order_status_driver() {
 	clear_screen();
 	CheckOrderStatus::check_order_status_driver(user_record->get_user_id());
 	pause();
 }
 
+//Confirm Delivery
+//Gets list of active orders and allows driver to update the status to delivered
+//Khoi Trinh
+//04/25/22
 void UserInterface::confirm_delivery() {
+	//Get list of active orders from the Order class
 	vector<int> order_ids = Order::get_active_orders_drivers(user_record->get_user_id());
-	vector<string> menu_options;
 
+	//Format and display it in a menu for user selection
+	vector<string> menu_options;
 	for (auto itr = order_ids.begin(); itr != order_ids.end();) {
 		Order order((*itr));
 		if (order.get_order_status() < OrderStatus::delivered) {
@@ -665,14 +834,14 @@ void UserInterface::confirm_delivery() {
 			itr = order_ids.erase(itr);
 		}
 	}
-
 	menu_options.push_back("Exit");
 	display_menu(menu_options, "Choose Delivery to Confirm");
 
 	int menu_selection = get_user_menu_selection(menu_options.size());
 	if (menu_selection == menu_options.size())
 		return;
-
+	
+	//Confirms delivery based on driver input selection
 	ConfirmDelivery::confirm_delivery(order_ids[menu_selection - 1]);
 }
 
@@ -680,8 +849,16 @@ void UserInterface::confirm_delivery() {
 
 
 //-------------------- Restaurant Functions --------------------
+
+//Accept or Decline Order
+//Gets list of new orders, allows restaurant to accept or decline the order
+//Khoi Trinh
+//04/25/22
 void UserInterface::accept_decline_order() {
+	//Get list of new order notifications
 	vector<int> order_ids = AcceptDeclineOrder::get_new_order_requests(user_record->get_user_id());
+
+	//Format and display list of orders in a menu
 	vector<string> menu_options;
 	for (int order_id : order_ids) {
 		Order order(order_id);
@@ -694,6 +871,7 @@ void UserInterface::accept_decline_order() {
 	if (menu_selection == menu_options.size())
 		return;
 
+	//get the order object and display information about the order and items in the order
 	clear_screen();
 	Order order(order_ids[menu_selection - 1]);
 	vector<Order::OrderItem> order_items = order.get_order_items_list();
@@ -706,6 +884,7 @@ void UserInterface::accept_decline_order() {
 	}
 	cout << "------------------------------------------------------\n\n";
 
+	//Ask user to accept or decline order, with input validation
 	string user_input;
 	bool valid = false;
 	cout << "Would you like to accept or decline the order (a/d)? ";
@@ -717,6 +896,7 @@ void UserInterface::accept_decline_order() {
 			cout << "Please enter either a or d: ";
 	} while (!valid);
 
+	//Run accept or decline functions based on input
 	if (user_input.compare("a") == 0) {
 		AcceptDeclineOrder::accept_order(order.get_order_id(), user_record->get_user_id());
 	}
@@ -725,8 +905,15 @@ void UserInterface::accept_decline_order() {
 	}
 }
 
+//Update Order Status
+//Restaurant user can update status of an active order
+//Khoi Trinh
+//04/25/22
 void UserInterface::update_order_status() {
+	//Get list of active orders
 	vector<int> order_ids = Order::get_active_orders_restaurants(user_record->get_user_id());
+
+	//Formats and displays list of orders
 	vector<string> menu_options;
 	for (int order_id : order_ids) {
 		menu_options.push_back(to_string(order_id));
@@ -734,16 +921,19 @@ void UserInterface::update_order_status() {
 	menu_options.push_back("Exit");
 	display_menu(menu_options, "Choose Order to Update Status");
 
+	//Get user selection on which order to change
 	int menu_selection = get_user_menu_selection(menu_options.size());
 	if (menu_selection == menu_options.size())
 		return;
 
+	//Display new status options and gets user input
 	menu_options = { "Under Review", "Confirmed", "Preparing", "Completed","Exit" };
 	display_menu(menu_options, "Order #" + to_string(order_ids[menu_selection - 1]));
 	menu_selection = get_user_menu_selection(menu_options.size());
 	if (menu_selection == menu_options.size())
 		return;
 	
+	//Gets status code based on user selection
 	int status = 0;
 	switch (menu_selection) {
 	case 1:
@@ -765,15 +955,25 @@ void UserInterface::update_order_status() {
 		exit(1);
 	}
 
+	//Updates order status based on status
 	UpdateOrderStatus::update_order_status(order_ids[menu_selection - 1], status);
 }
 
+//Show Pending Orders
+//Gets list of pending orders for the restaurant and displays it in a report
+//Khoi Trinh
+//04/25/22
 void UserInterface::show_pending_orders() {
 	clear_screen();
 	ShowPendingOrders::show_pending_orders(user_record->get_user_id());
 	pause();
 }
 
+//-------------------- Restaurant Update Menu Functions --------------------
+//Update Menu Screen
+//Main loop to display options for updating menu.
+//Khoi Trinh
+//04/25/22
 void UserInterface::display_update_menu_screen() {
 	vector<string> menu_options = { "Add Item", "Update Item", "Delete Item", "Exit"};
 	while (true) {
@@ -800,17 +1000,27 @@ void UserInterface::display_update_menu_screen() {
 	}
 }
 
+//Add Menu Item
+//Gets new menu item into and passes to UpdateMenu class to generate a new menu item
+//Khoi Trinh
+//04/25/22
 void UserInterface::add_menu_item() {
 	clear_screen();
 	vector<string> user_input;
 
 	cout << "Add Menu Item\n--------------------\n";
+	//Gets new item info
 	get_menu_item_info(user_input);
 
 	UpdateMenu::add_menu_item(user_input, restaurant_record);
 }
 
+//Update Menu Item
+//Gets user selection for item to change, then gets new info for that item and updates it
+//Khoi Trinh
+//04/25/22
 void UserInterface::update_menu_item() {
+	//Get list of all current menu items and displays it on a menu screen
 	vector<pair<int,string>> menu_item_list = restaurant_record->get_list_menu_item_names();
 	vector<string> menu_options;
 	for (auto item : menu_item_list) {
@@ -821,6 +1031,7 @@ void UserInterface::update_menu_item() {
 
 	int user_selection = get_user_menu_selection(menu_options.size());
 
+	//If exit chosen, return
 	if (user_selection == menu_options.size()) {
 		return;
 	}
@@ -828,12 +1039,19 @@ void UserInterface::update_menu_item() {
 	vector<string> user_input;
 
 	cout << "Update Menu Item\n--------------------\n";
+	//Get new item info
 	get_menu_item_info(user_input);
 
+	//Send item info to UpdateMenu to update
 	UpdateMenu::update_menu_item(user_input, restaurant_record, menu_item_list[user_selection - 1].first);
 }
 
+//Delete Menu Item
+//Gets list of menu items and lets user delete one
+//Khoi Trinh
+//04/25/22
 void UserInterface::delete_menu_item() {
+	//Get list of current menu items, displays in menu screen
 	vector<pair<int, string>> menu_item_list = restaurant_record->get_list_menu_item_names();
 	vector<string> menu_options;
 	for (auto item : menu_item_list) {
@@ -848,6 +1066,7 @@ void UserInterface::delete_menu_item() {
 		return;
 	}
 
+	//Deletes the item that user selected
 	UpdateMenu::delete_menu_item(restaurant_record, menu_item_list[user_selection - 1].first);
 }
 
@@ -855,7 +1074,10 @@ void UserInterface::delete_menu_item() {
 
 //-------------------- Helper Functions --------------------
 
-//Formats and displays a menu_title and a vector of menu_options
+//Display Menu
+//Gets vector of options and formats and displays it in a menu
+//Khoi Trinh
+//04/12/22
 void UserInterface::display_menu(vector<string>& menu_options, string menu_title) {
 	clear_screen();
 	
@@ -887,7 +1109,10 @@ void UserInterface::display_menu(vector<string>& menu_options, string menu_title
 	cout << setfill('-') << setw(UI_MENU_WIDTH) << "-" << endl << endl << setfill(' ');
 }
 
-//Get user menu selection and validate the input
+//Get User Menu Selection
+//Gets user input and validates it is an int less than the max option
+//Khoi Trinh
+//04/12/22
 int UserInterface::get_user_menu_selection(int max_valid_input) {
 	string user_input;
 	int option = -1;
@@ -913,11 +1138,19 @@ int UserInterface::get_user_menu_selection(int max_valid_input) {
 	return option;
 }
 
+//Clear Screen
+//Clears the screen to prepare for further output
+//Khoi Trinh
+//04/12/22
 void UserInterface::clear_screen() {
 	cout << flush;
 	system("CLS");
 }
 
+//Get User Info
+//Gets user info to add or update a user
+//Khoi Trinh
+//04/12/22
 void UserInterface::get_user_info(vector<string>& user_input) {
 	string input;
 	cout << "First Name: ";
@@ -941,6 +1174,10 @@ void UserInterface::get_user_info(vector<string>& user_input) {
 	user_input.push_back(input);
 }
 
+//Get Restaurant Info
+//Gets info to add or update a restaurant
+//Khoi Trinh
+//04/12/22
 void UserInterface::get_restaurant_info(vector<string>& user_input) {
 	string input;
 
@@ -957,6 +1194,10 @@ void UserInterface::get_restaurant_info(vector<string>& user_input) {
 	user_input.push_back(input);
 }
 
+//Get Menu Item Info
+//Gets Gets information to add or update a menu item, with data validation for prices
+//Khoi Trinh
+//04/12/22
 void UserInterface::get_menu_item_info(vector<string>& user_input) {
 	string input;
 	double price = -1.0;
@@ -990,6 +1231,10 @@ void UserInterface::get_menu_item_info(vector<string>& user_input) {
 	user_input.push_back(input);
 }
 
+//Get Restaurant Record
+//Fetches restaurant record from database
+//Khoi Trinh
+//04/12/22
 void UserInterface::get_restaurant_record() {
 	int result = Restaurant::get_restaurant_record(user_record->get_user_id(), restaurant_record);
 	if (result == 0) {
@@ -998,6 +1243,10 @@ void UserInterface::get_restaurant_record() {
 	}
 }
 
+//Pause Screen
+//Pauses screen to let user read, continues after user input
+//Khoi Trinh
+//04/12/22
 void UserInterface::pause() {
 	string temp;
 	cout << "Press Enter to Continue\n\n";
