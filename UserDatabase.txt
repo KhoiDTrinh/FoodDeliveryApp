@@ -6,3 +6,4 @@ user_id,username,password,account_type,first_name,last_name,address,phone,email
 6,bk,16653392337757490594,2,Burger,King,993488 The King,13223423,asdfkjasdf
 7,ck,16653392337757490594,2,Chick,Fila,1234 Chicken,1231231234,chick@en.com
 8,Vanessa,14415341715956615706,1,Vanessa,Corral,1234 Main Street,1231231231,vanessa@corral.com
+9,New,11857839211710813138,0,New,User,123 Address,1231231232,new@user.com
